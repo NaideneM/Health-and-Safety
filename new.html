@@ -125,8 +125,7 @@
       Start Your Shift 🚀
     </button>
   </section>
-
-  <!-- ========== TASK 1 – HAZARD HUNT ========== -->
+ <!-- ========== TASK 1 – HAZARD HUNT ========== -->
   <section id="task1"
            class="hidden bg-white rounded-xl shadow-lg p-4 sm:p-6 space-y-6">
 
@@ -216,61 +215,40 @@
     </button>
   </section>
 </div> 
-        <!-- Task 2: Risk-Buster Puzzle -->
-        <div id="task2" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">🎯 Task 2: Risk-Buster Puzzle</h2>
-            <p class="text-gray-600 mb-6">Drag the control measures to the correct level of the hierarchy of controls pyramid. Match each control to eliminate or minimise the hazards you found.</p>
-            
-            <!-- Hierarchy Pyramid -->
-            <div class="mb-8">
-                <div class="text-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-800">Hierarchy of Controls</h3>
-                    <p class="text-sm text-gray-600">Most effective at top, least effective at bottom</p>
-                </div>
-                
-                <div class="space-y-2">
-                    <div class="drop-zone bg-red-100 border-red-300 rounded-lg p-4 text-center" data-level="elimination">
-                        <h4 class="font-semibold text-red-800">1. Elimination</h4>
-                        <p class="text-sm text-red-600">Remove the hazard completely</p>
-                        <div class="controls-container mt-2 min-h-12"></div>
-                    </div>
-                    
-                    <div class="drop-zone bg-orange-100 border-orange-300 rounded-lg p-4 text-center" data-level="substitution">
-                        <h4 class="font-semibold text-orange-800">2. Substitution</h4>
-                        <p class="text-sm text-orange-600">Replace with something safer</p>
-                        <div class="controls-container mt-2 min-h-12"></div>
-                    </div>
-                    
-                    <div class="drop-zone bg-yellow-100 border-yellow-300 rounded-lg p-4 text-center" data-level="engineering">
-                        <h4 class="font-semibold text-yellow-800">3. Engineering Controls</h4>
-                        <p class="text-sm text-yellow-600">Isolate people from hazard</p>
-                        <div class="controls-container mt-2 min-h-12"></div>
-                    </div>
-                    
-                    <div class="drop-zone bg-blue-100 border-blue-300 rounded-lg p-4 text-center" data-level="administrative">
-                        <h4 class="font-semibold text-blue-800">4. Administrative Controls</h4>
-                        <p class="text-sm text-blue-600">Change work practices</p>
-                        <div class="controls-container mt-2 min-h-12"></div>
-                    </div>
-                    
-                    <div class="drop-zone bg-purple-100 border-purple-300 rounded-lg p-4 text-center" data-level="ppe">
-                        <h4 class="font-semibold text-purple-800">5. PPE</h4>
-                        <p class="text-sm text-purple-600">Personal protective equipment</p>
-                        <div class="controls-container mt-2 min-h-12"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Control Measures Bank -->
-            <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                <h4 class="font-semibold text-gray-800 mb-3">Control Measures Bank</h4>
-                <div id="controls-bank" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
-            </div>
-            
-            <button id="task2-complete" onclick="completeTask2()" class="hidden bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">
-                Complete Risk-Buster ✅
-            </button>
-        </div>
+ 
+      <!-- Task 2: Eliminate vs Minimise (exactly 3) -->
+<div id="task2" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
+ <li>🎯 <strong>Eliminate vs Minimise:</strong> Choose and describe controls</li>
+  <p class="text-gray-700 mb-4">
+    Pick <strong>exactly 3</strong> hazards (from Task 1). For each one:
+    <span class="font-semibold">choose Eliminate or Minimise</span> and
+    <span class="font-semibold">describe</span> the control you’d use.
+  </p>
+
+  <div class="bg-blue-50 border border-blue-200 p-3 rounded-lg text-sm text-blue-800 mb-4">
+    ✅ Mobile-friendly: tap to select & type. All three cards must be completed.
+  </div>
+
+  <!-- Progress -->
+  <div class="flex items-center justify-between mb-3 text-sm text-gray-600">
+    <span>Cards complete:</span>
+    <span id="t2-progress">0/3</span>
+  </div>
+  <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+    <div id="t2-bar" class="progress-bar bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full" style="width:0%"></div>
+  </div>
+
+  <!-- Three required cards -->
+  <div id="t2-cards" class="grid grid-cols-1 gap-4">
+    <!-- Cards injected by initializeTask2() -->
+  </div>
+
+  <button id="task2-complete"
+          onclick="completeTask2()"
+          class="hidden mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">
+    Submit Eliminate/Minimise ✅
+  </button>
+</div>
 
         <!-- Task 3: Accident Log Mini-Sim -->
         <div id="task3" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
@@ -442,6 +420,13 @@
             <button id="task4-complete" onclick="completeTask4()" class="hidden mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">
                 Complete Emergency Dash ✅
             </button>
+            <!-- Add inside Task 4, below the sequence list -->
+<div class="mt-2">
+  <button type="button" onclick="clearEmergencySequence()"
+          class="text-sm underline text-gray-600 hover:text-gray-800">
+    Clear sequence
+  </button>
+</div>
         </div>
 
 <!-- Task 5: Safety Court Simulation -->
@@ -746,7 +731,7 @@ function showTask(taskNumber) {
   if (taskNumber === 1) initializeTask1();
   if (taskNumber === 2) initializeTask2();
   if (taskNumber === 4) initializeTask4();
-  if (taskNumber === 5) initializeTask5();          // 🔗 NEW LINE
+  if (taskNumber === 5) initializeTask5();         
 }
 
 /* --------------  TASK 1 (Hazard Apples)  -------------- */
@@ -811,62 +796,147 @@ function completeTask1() {
   showTask(2);
 }
 
-/* --------------  TASK 2 (Hierarchy of Controls)  -------------- */
+/* --------------  TASK 2 (Eliminate vs Minimise, exactly 3)  -------------- */
 function initializeTask2() {
-  const controlsBank = document.getElementById('controls-bank');
-  controlsBank.innerHTML = '';
+  // Build 3 empty response slots
+  gameState.task2Responses = [
+    { hazardId: '', choice: '', description: '' },
+    { hazardId: '', choice: '', description: '' },
+    { hazardId: '', choice: '', description: '' }
+  ];
 
-  controlMeasures.forEach(control => {
-    const controlDiv = document.createElement('div');
-    controlDiv.className = 'control-item bg-white border border-gray-300 rounded-lg p-3 cursor-move text-sm';
-    controlDiv.draggable = true;
-    controlDiv.dataset.controlId = control.id;
-    controlDiv.dataset.level = control.level;
-    controlDiv.textContent = control.text;
+  const container = document.getElementById('t2-cards');
+  container.innerHTML = '';
 
-    controlDiv.addEventListener('dragstart', function(e) {
-      e.dataTransfer.setData('text/plain', JSON.stringify({
-        id: control.id, level: control.level, text: control.text
-      }));
-    });
-    controlsBank.appendChild(controlDiv);
-  });
+  // Options come from hazards found in Task 1; if empty, fall back to all hazards
+  const availableIds = gameState.hazardsFound.length
+    ? gameState.hazardsFound
+    : Object.keys(hazards);
 
-  document.querySelectorAll('.drop-zone[data-level]').forEach(zone => {
-    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
-    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
-    zone.addEventListener('drop', function(e) {
-      e.preventDefault(); zone.classList.remove('drag-over');
-      const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-      const container = this.querySelector('.controls-container');
-      const controlDiv = document.createElement('div');
-      controlDiv.className = 'bg-white border border-blue-500 rounded p-2 text-sm text-blue-800';
-      controlDiv.textContent = data.text;
-      controlDiv.dataset.originalLevel = data.level;
-      controlDiv.dataset.placedLevel = this.dataset.level;
-      container.appendChild(controlDiv);
+  const hazardOptionsHTML = availableIds.map(id =>
+    `<option value="${id}">🍎 ${hazards[id].name}</option>`
+  ).join('');
 
-      const original = document.querySelector(`[data-control-id="${data.id}"]`);
-      if (original) original.remove();
+  for (let i = 0; i < 3; i++) {
+    const card = document.createElement('div');
+    card.className = 'rounded-xl border border-gray-200 p-4 bg-gray-50';
+    card.innerHTML = `
+      <div class="flex items-center justify-between">
+        <h3 class="font-semibold text-gray-800">Card ${i + 1}</h3>
+        <span id="t2-ok-${i}" class="hidden badge inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-700">Ready</span>
+      </div>
 
-      checkTask2Complete();
-    });
-  });
-}
-function checkTask2Complete() {
-  if (document.querySelectorAll('#controls-bank .control-item').length === 0) {
-    document.getElementById('task2-complete').classList.remove('hidden');
-    addXP(75);
+      <label class="block text-sm font-medium text-gray-700 mt-3 mb-1">Select a hazard</label>
+      <select id="t2-h-${i}" class="w-full border border-gray-300 rounded-lg p-2 bg-white">
+        <option value="">— choose —</option>
+        ${hazardOptionsHTML}
+      </select>
+
+      <label class="block text-sm font-medium text-gray-700 mt-3 mb-1">Choose control type</label>
+      <div class="grid grid-cols-2 gap-2">
+        <button type="button" class="t2-choice btn-choice" data-slot="${i}" data-value="eliminate">🗑️ Eliminate</button>
+        <button type="button" class="t2-choice btn-choice" data-slot="${i}" data-value="minimise">🛡️ Minimise</button>
+      </div>
+
+      <label class="block text-sm font-medium text-gray-700 mt-3 mb-1">Describe the control (one or two sentences)</label>
+      <textarea id="t2-d-${i}" rows="3" class="w-full border border-gray-300 rounded-lg p-2" placeholder="e.g., Remove the broken ladder from service and use a cherry picker."></textarea>
+      <p class="text-xs text-gray-500 mt-1">Minimum 12 characters.</p>
+    `;
+    container.appendChild(card);
   }
+
+  // Style for choice buttons (mobile friendly)
+  injectT2ChoiceStyles();
+
+  // Wire up handlers
+  document.querySelectorAll('.t2-choice').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const slot = parseInt(btn.dataset.slot, 10);
+      const val  = btn.dataset.value;
+      setT2Choice(slot, val);
+      validateT2();
+    });
+  });
+
+  for (let i = 0; i < 3; i++) {
+    document.getElementById(`t2-h-${i}`).addEventListener('change', validateT2);
+    document.getElementById(`t2-d-${i}`).addEventListener('input', validateT2);
+  }
+
+  validateT2();
 }
+
+function setT2Choice(slot, value) {
+  gameState.task2Responses[slot].choice = value;
+
+  // Toggle visual active state
+  const group = document.querySelectorAll(`.t2-choice[data-slot="${slot}"]`);
+  group.forEach(b => b.classList.remove('active'));
+  const picked = document.querySelector(`.t2-choice[data-slot="${slot}"][data-value="${value}"]`);
+  if (picked) picked.classList.add('active');
+}
+
+function validateT2() {
+  let complete = 0;
+
+  for (let i = 0; i < 3; i++) {
+    const hSel = document.getElementById(`t2-h-${i}`);
+    const txt  = document.getElementById(`t2-d-${i}`);
+    const ok   = document.getElementById(`t2-ok-${i}`);
+
+    gameState.task2Responses[i].hazardId    = hSel.value;
+    gameState.task2Responses[i].description = txt.value.trim();
+
+    const good = hSel.value && gameState.task2Responses[i].choice &&
+                 gameState.task2Responses[i].description.length >= 12;
+
+    ok.classList.toggle('hidden', !good);
+    if (good) complete++;
+  }
+
+  // Progress UI
+  const pct = (complete / 3) * 100;
+  document.getElementById('t2-progress').textContent = `${complete}/3`;
+  document.getElementById('t2-bar').style.width = `${pct}%`;
+
+  // Only show submit when all 3 are complete (exactly three; no extras exist)
+  document.getElementById('task2-complete').classList.toggle('hidden', complete !== 3);
+}
+
 function completeTask2() {
-  gameState.completedTasks.push(2);
-  updateProgress();
+  // Freeze inputs (summative)
+  document.querySelectorAll('#t2-cards select, #t2-cards textarea, #t2-cards .t2-choice')
+          .forEach(el => el.disabled = true);
+
+  // Confirmation panel
+  const conf = document.createElement('div');
+  conf.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4 text-sm text-blue-700';
+  conf.innerHTML = `✅ Your three Eliminate/Minimise decisions & descriptions have been recorded for teacher review.`;
+  document.querySelector('#task2').appendChild(conf);
+
+  if (!gameState.completedTasks.includes(2)) {
+    gameState.completedTasks.push(2);
+    updateProgress();
+  }
   showTask(3);
 }
 
-function addXP(amount) {
-  console.log(`XP +${amount}`);
+function injectT2ChoiceStyles() {
+  if (document.getElementById('t2-choice-style')) return;
+  const s = document.createElement('style');
+  s.id = 't2-choice-style';
+  s.textContent = `
+    .btn-choice {
+      display:inline-flex;align-items:center;justify-content:center;
+      border:2px solid #d1d5db;border-radius:.75rem;padding:.6rem .8rem;
+      background:#fff;color:#1f2937;font-weight:600
+    }
+    .btn-choice.active { border-color:#16a34a;background:#dcfce7;color:#166534 }
+    @media (max-width:640px){
+      .btn-choice{ padding: .75rem .9rem; }
+    }
+  `;
+  document.head.appendChild(s);
 }
 
 /* --------------  TASK 3 (Incident Form)  -------------- */
@@ -900,15 +970,25 @@ function completeTask3() {
   showTask(4);
 }
 
-/* --------------  TASK 4 (Emergency Sequence)  -------------- */
+/* --------------  TASK 4 (Emergency Sequence – mobile tap fallback)  -------------- */
+function isSmallScreen(){ return window.matchMedia('(max-width: 640px)').matches; }
+
 function initializeTask4() {
+  // Enable drag on larger screens
   document.querySelectorAll('.emergency-step').forEach(step => {
     step.addEventListener('dragstart', e => {
       e.dataTransfer.setData('text/plain', JSON.stringify({
         step: step.dataset.step, text: step.textContent.trim()
       }));
     });
+
+    // Mobile: tap to place
+    if (isSmallScreen()) {
+      step.addEventListener('click', () => placeStepByTap(step));
+      step.classList.add('ring-1','ring-blue-200','rounded-lg'); // larger tap target
+    }
   });
+
   document.querySelectorAll('#emergency-sequence .drop-zone').forEach(zone => {
     zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
     zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
@@ -918,9 +998,49 @@ function initializeTask4() {
       this.innerHTML = `<div class="bg-blue-100 border border-blue-300 rounded p-2 text-sm">${data.text}</div>`;
       this.dataset.step = data.step;
 
-      const original = document.querySelector(`[data-step="${data.step}"]`);
+      const original = document.querySelector(`#emergency-steps [data-step="${data.step}"]`);
       if (original && original.parentElement.id === 'emergency-steps') original.remove();
     });
+  });
+}
+
+function nextEmptyDropZone(){
+  return Array.from(document.querySelectorAll('#emergency-sequence .drop-zone'))
+              .find(z => !z.dataset.step);
+}
+
+function placeStepByTap(stepEl) {
+  const zone = nextEmptyDropZone();
+  if (!zone) return; // all filled
+  const text = stepEl.textContent.trim();
+  const key  = stepEl.dataset.step;
+  zone.innerHTML = `<div class="bg-blue-100 border border-blue-300 rounded p-2 text-sm">${text}</div>`;
+  zone.dataset.step = key;
+  // remove from source
+  if (stepEl.parentElement?.id === 'emergency-steps') stepEl.remove();
+}
+
+function clearEmergencySequence() {
+  // move placed items back to the source list
+  const source = document.getElementById('emergency-steps');
+  document.querySelectorAll('#emergency-sequence .drop-zone').forEach(zone => {
+    if (zone.dataset.step) {
+      const txt = zone.textContent.trim();
+      const key = zone.dataset.step;
+      const div = document.createElement('div');
+      div.className = 'emergency-step bg-blue-100 border border-blue-300 rounded-lg p-3 cursor-move';
+      div.setAttribute('draggable', 'true');
+      div.dataset.step = key;
+      div.textContent = txt;
+      // reattach handlers
+      div.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', JSON.stringify({ step: key, text: txt }));
+      });
+      if (isSmallScreen()) div.addEventListener('click', () => placeStepByTap(div));
+      source.appendChild(div);
+    }
+    zone.textContent = `Step ${zone.getAttribute('data-position')}: Drop here`;
+    delete zone.dataset.step;
   });
 }
 function checkTask4() {
@@ -932,33 +1052,50 @@ function checkTask4() {
     alert('Please place all 6 emergency steps in order before submitting.');
     return;
   }
+  // record for summary
   gameState.task4Sequence = order;
-  document.getElementById('task4-complete').classList.remove('hidden');
 
+  // show complete button & confirmation
+  document.getElementById('task4-complete').classList.remove('hidden');
   const conf = document.createElement('div');
   conf.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4';
   conf.innerHTML = `
     <h4 class="font-semibold text-blue-800">🚨 Emergency Sequence Submitted</h4>
-    <p class="text-sm text-blue-600">
-      Your emergency procedure sequence has been recorded for teacher review.
-    </p>`;
+    <p class="text-sm text-blue-600">Your emergency procedure sequence has been recorded for teacher review.</p>`;
   document.querySelector('#task4').appendChild(conf);
 }
+
 function completeTask4() {
-  gameState.completedTasks.push(4);
-  updateProgress();
+  if (!gameState.completedTasks.includes(4)) {
+    gameState.completedTasks.push(4);
+    updateProgress();
+  }
   showTask(5);
 }
-
 // Court verdict system
 const TOTAL_REQUIRED = 2;   // ← only change needed if you add/remove cases later
 const courtVerdicts = {};
+
+// Override the earlier initializeTask5 to avoid errors (your Task 5 cases are static in the HTML)
+function initializeTask5() {
+  // No-op; keep HUD in sync if those elements exist
+  updatePCBUHUD();
+}
+
+// Safe HUD updater (handles missing #pcbu-xp / #pcbu-lives gracefully)
+function updatePCBUHUD () {
+  const xpEl = document.getElementById('pcbu-xp');
+  const livesEl = document.getElementById('pcbu-lives');
+  if (xpEl)   xpEl.textContent    = pcbuXP;
+  if (livesEl) livesEl.textContent = pcbuLives;
+}
 
 function deliverVerdict(caseNumber, verdict) {
   // Prevent double-submission on the same case
   if (courtVerdicts[caseNumber]) return;
 
-  const reasoning = document.getElementById(`case${caseNumber}-reasoning`).value.trim();
+  const reasoningEl = document.getElementById(`case${caseNumber}-reasoning`);
+  const reasoning = reasoningEl ? reasoningEl.value.trim() : '';
   if (reasoning.length < 5) {
     alert('Please provide detailed judicial reasoning before delivering your verdict.');
     return;
@@ -969,73 +1106,109 @@ function deliverVerdict(caseNumber, verdict) {
 
   // Update case UI
   const caseCard = document.getElementById(`case${caseNumber}`);
+  if (!caseCard) return;
+
   const statusElement = caseCard.querySelector('.case-status');
   const verdictSection = caseCard.querySelector('.verdict-section');
 
-  if (verdict === 'guilty') {
-    statusElement.className = 'case-status bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium';
-    statusElement.textContent = '⚖️ GUILTY';
-    caseCard.className = 'case-card border-2 border-red-400 rounded-xl p-6 transition-all duration-300 bg-red-50';
-  } else {
-    statusElement.className = 'case-status bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium';
-    statusElement.textContent = '⚖️ NOT GUILTY';
-    caseCard.className = 'case-card border-2 border-green-400 rounded-xl p-6 transition-all duration-300 bg-green-50';
+  if (statusElement) {
+    if (verdict === 'guilty') {
+      statusElement.className = 'case-status bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium';
+      statusElement.textContent = '⚖️ GUILTY';
+      caseCard.className = 'case-card border-2 border-red-400 rounded-xl p-6 transition-all duration-300 bg-red-50';
+    } else {
+      statusElement.className = 'case-status bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium';
+      statusElement.textContent = '⚖️ NOT GUILTY';
+      caseCard.className = 'case-card border-2 border-green-400 rounded-xl p-6 transition-all duration-300 bg-green-50';
+    }
   }
 
-  // Lock in verdict
-  verdictSection.innerHTML = `
-    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-      <h5 class="font-semibold text-blue-800 mb-2">📜 Verdict Delivered</h5>
-      <p class="text-blue-700 text-sm"><strong>Decision:</strong> ${verdict.toUpperCase()}</p>
-      <p class="text-blue-700 text-sm"><strong>Reasoning:</strong> ${reasoning}</p>
-      <p class="text-xs text-blue-600 mt-2">✅ Submitted for teacher review</p>
-    </div>
-  `;
+  if (verdictSection) {
+    verdictSection.innerHTML = `
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <h5 class="font-semibold text-blue-800 mb-2">📜 Verdict Delivered</h5>
+        <p class="text-blue-700 text-sm"><strong>Decision:</strong> ${verdict.toUpperCase()}</p>
+        <p class="text-blue-700 text-sm"><strong>Reasoning:</strong> ${reasoning}</p>
+        <p class="text-xs text-blue-600 mt-2">✅ Submitted for teacher review</p>
+      </div>
+    `;
+  }
 
   updateCourtProgress();
 
   // Check if all required verdicts delivered
   const delivered = Object.keys(courtVerdicts).length;
   if (delivered >= TOTAL_REQUIRED) {
-    document.getElementById('task5-complete').classList.remove('hidden');
+    const doneBtn = document.getElementById('task5-complete');
+    if (doneBtn) doneBtn.classList.remove('hidden');
 
     // Final court summary
-    const summaryDiv = document.createElement('div');
-    summaryDiv.className = 'bg-amber-50 border-2 border-amber-300 rounded-xl p-6 mt-6';
-    summaryDiv.innerHTML = `
-      <div class="text-center">
-        <div class="text-4xl mb-3">⚖️</div>
-        <h3 class="text-xl font-bold text-amber-800 mb-2">Court Session Complete!</h3>
-        <p class="text-amber-700">All ${TOTAL_REQUIRED} cases have been reviewed and verdicts delivered. Your judicial decisions demonstrate understanding of PCBU duties under the Health & Safety at Work Act 2015.</p>
-      </div>
-    `;
-    document.getElementById('court-cases').appendChild(summaryDiv);
+    const casesWrapper = document.getElementById('court-cases');
+    if (casesWrapper && !document.getElementById('court-summary')) {
+      const summaryDiv = document.createElement('div');
+      summaryDiv.id = 'court-summary';
+      summaryDiv.className = 'bg-amber-50 border-2 border-amber-300 rounded-xl p-6 mt-6';
+      summaryDiv.innerHTML = `
+        <div class="text-center">
+          <div class="text-4xl mb-3">⚖️</div>
+          <h3 class="text-xl font-bold text-amber-800 mb-2">Court Session Complete!</h3>
+          <p class="text-amber-700">All ${TOTAL_REQUIRED} cases have been reviewed and verdicts delivered. Your judicial decisions demonstrate understanding of PCBU duties under the Health & Safety at Work Act 2015.</p>
+        </div>
+      `;
+      casesWrapper.appendChild(summaryDiv);
+    }
   }
 }
 
 function updateCourtProgress() {
   const count = Object.keys(courtVerdicts).length;
-  document.getElementById('cases-reviewed').textContent = count;
-  document.getElementById('verdicts-delivered').textContent = count;
+  const reviewed = document.getElementById('cases-reviewed');
+  const delivered = document.getElementById('verdicts-delivered');
+  if (reviewed)  reviewed.textContent = count;
+  if (delivered) delivered.textContent = count;
 }
 
 function completeTask5() {
-  gameState.completedTasks.push(5);
+  if (!gameState.completedTasks.includes(5)) {
+    gameState.completedTasks.push(5);
+  }
   updateProgress();
   showCompletionScreen();
 }
 
 function showCompletionScreen() {
+  // Hide tasks if they exist
   for (let i = 1; i <= 5; i++) {
-    document.getElementById(`task${i}`).classList.add('hidden');
+    const el = document.getElementById(`task${i}`);
+    if (el) el.classList.add('hidden');
   }
-  document.getElementById('completion-screen').classList.remove('hidden');
+
+  // Create completion screen if missing
+  let done = document.getElementById('completion-screen');
+  if (!done) {
+    done = document.createElement('section');
+    done.id = 'completion-screen';
+    done.className = 'bg-white rounded-xl shadow-lg p-6 text-center';
+    done.innerHTML = `
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">✅ Assessment Submitted</h2>
+      <p class="text-gray-700 mb-4">Your responses have been recorded for teacher review.</p>
+      <button onclick="downloadSummary()"
+              class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">
+        Download Summary
+      </button>
+    `;
+    const main = document.querySelector('main') || document.body;
+    main.appendChild(done);
+  }
+  done.classList.remove('hidden');
 }
 
 function updateProgress() {
   const progress = (gameState.completedTasks.length / 5) * 100;
-  document.getElementById('progress-bar').style.width = `${progress}%`;
-  document.getElementById('progress-text').textContent = `${gameState.completedTasks.length}/5 Tasks Complete`;
+  const bar = document.getElementById('progress-bar');
+  const label = document.getElementById('progress-text');
+  if (bar)   bar.style.width = `${progress}%`;
+  if (label) label.textContent = `${gameState.completedTasks.length}/5 Tasks Complete`;
 }
 
 function downloadSummary () {
@@ -1046,17 +1219,26 @@ Time: ${new Date().toLocaleTimeString()}
 
 STUDENT RESPONSES FOR TEACHER REVIEW:\n\n`;
 
-  // ── Task 1
+  // ── Task 1
   txt += 'TASK 1: HAZARD IDENTIFICATION\n';
   Object.keys(gameState.hazardDescriptions).forEach(id => {
     txt += `Hazard ${id}: ${hazards[id].name}
 Student Description: ${gameState.hazardDescriptions[id]}\n`;
   });
 
-  // ── Task 2
-  txt += '\nTASK 2: HIERARCHY OF CONTROLS\n(Teacher to review placement accuracy)\n';
+  // ── Task 2 (Eliminate vs Minimise)
+  txt += '\nTASK 2: ELIMINATE vs MINIMISE (3 required)\n';
+  if (gameState.task2Responses) {
+    gameState.task2Responses.forEach((r, idx) => {
+      if (r.hazardId) {
+        txt += `Card ${idx + 1}: Hazard ${r.hazardId} - ${hazards[r.hazardId].name}
+Type: ${r.choice.toUpperCase()}
+Description: ${r.description}\n`;
+      }
+    });
+  }
 
-  // ── Task 3
+  // ── Task 3
   txt += '\nTASK 3: INCIDENT REPORTING\n';
   if (gameState.task3Responses) {
     const r = gameState.task3Responses;
@@ -1066,13 +1248,13 @@ Notify: ${r.notify}
 WorkSafe Timing: ${r.worksafeTiming}\n`;
   }
 
-  // ── Task 4
+  // ── Task 4
   txt += '\nTASK 4: EMERGENCY PROCEDURES\n';
   if (gameState.task4Sequence) {
     txt += gameState.task4Sequence.map((s, i) => `${i + 1}. ${s}`).join('\n') + '\n';
   }
 
-  // ── Task 5
+  // ── Task 5
   txt += '\nTASK 5: COURT VERDICTS\n';
   Object.keys(courtVerdicts).forEach(num => {
     const v = courtVerdicts[num];
@@ -1091,7 +1273,8 @@ Reasoning: ${v.reasoning}\n`;
   URL.revokeObjectURL(url);
 }
 </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96795ad8e54fd992',t:'MTc1MzkyNTY4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
+<!-- Accessibility: TTS + STT helpers (kept, moved before </body>) -->
 <script>
 /* -----------------------------------------------------------------
    1.  CONFIG
@@ -1102,7 +1285,7 @@ const MIC_BTN_HTML  = '<i class="fa-solid fa-microphone"></i>';
 const READABLE_SEL  = 'h1,h2,h3,h4,h5,h6,p,li,label,th,td,blockquote';
 
 /* -----------------------------------------------------------------
-   2.  TEXT‑TO‑SPEECH helpers
+   2.  TEXT-TO-SPEECH helpers
 ------------------------------------------------------------------*/
 let preferredVoice = null;
 const preferredVoiceNames = [
@@ -1116,7 +1299,7 @@ function chooseVoice(){
     const v = voices.find(v=>v.name === name);
     if (v) return v;
   }
-  return voices.find(v=>v.lang.startsWith('en-')) || null;
+  return voices.find(v=>v.lang && v.lang.startsWith('en-')) || null;
 }
 function speak(text){
   if(!text.trim()) return;
@@ -1129,7 +1312,7 @@ function speak(text){
 }
 
 /* -----------------------------------------------------------------
-   3.  SPEECH‑TO‑TEXT helpers
+   3.  SPEECH-TO-TEXT helpers
 ------------------------------------------------------------------*/
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognizer = null, activeTarget = null;
@@ -1153,7 +1336,7 @@ function startRecognizer(target){
     recognizer.onerror = stopAllMicBtns;
   }
   activeTarget = target;
-  try{ recognizer.start(); }catch(_){ /* double‑start safety */ }
+  try{ recognizer.start(); }catch(_){ /* double-start safety */ }
 }
 function stopRecognizer(){
   if(recognizer){
@@ -1168,7 +1351,7 @@ function stopAllMicBtns(){
 }
 
 /* -----------------------------------------------------------------
-   4.  DOM ENHANCEMENT
+   4.  DOM ENHANCEMENT
 ------------------------------------------------------------------*/
 function addEarButtons(root=document){
   root.querySelectorAll(READABLE_SEL).forEach(el=>{
@@ -1210,7 +1393,7 @@ function addMicButtons(root=document){
 }
 
 /* -----------------------------------------------------------------
-   5.  INITIALISE + observe for late‑added nodes (e.g. modals)
+   5.  INITIALISE + observe for late-added nodes (e.g. modals)
 ------------------------------------------------------------------*/
 function enhance(root=document){
   addEarButtons(root);
@@ -1246,4 +1429,5 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 });
 </script>
+</body>
 </html>

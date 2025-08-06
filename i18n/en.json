@@ -1,0 +1,20 @@
+{
+  "welcome_title": "Welcome to Hei Whanake Orchard!",
+  "welcome_msg"  : "You’re the Safety Supervisor for the day during our busy harvest season.",
+  "start_shift"  : "Start Your Shift 🚀",
+  "tasks_today"  : "Your Tasks Today:",
+  "task1_title"  : "Task 1 – Hazard Hunt",
+  "task2_title"  : "Task 2 – Risk‑Buster",
+  "task3_title"  : "Task 3 – Accident Log",
+  "task4_title"  : "Task 4 – Emergency Dash",
+  "task5_title"  : "Safety Court: Judge’s Chamber",
+  "submit"       : "Submit ✅",
+  "cancel"       : "Cancel",
+  "complete"     : "Complete ✅",
+  "progress"     : "Progress",
+  "found"        : "Found",
+  "play_para"    : "Play paragraph",
+  "voice_input"  : "Start voice input",
+  "assessment_submitted": "Assessment Submitted!",
+  "download_summary": "Download Response Summary"
+}

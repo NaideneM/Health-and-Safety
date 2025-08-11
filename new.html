@@ -58,6 +58,28 @@
   cursor:pointer; font-size:0.9em;
 }
 .ear-btn:hover{ color:#0369a1; }
+/* Square, no-crop images */
+.square-img {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  max-width: 16rem;         /* modal max size */
+  object-fit: contain;      /* don't crop */
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: .5rem;
+  padding: .5rem;
+}
+
+/* Smaller square thumbnail for the list */
+.square-thumb {
+  aspect-ratio: 1 / 1;
+  width: 4.5rem;            /* ~w-18 */
+  object-fit: contain;      /* don't crop */
+  background: #f8fafc;
+  border: 1px solid #bfdbfe;/* matches your blue border vibe */
+  border-radius: .375rem;
+  padding: .25rem;
+}
   </style>
 </head>
 
@@ -125,130 +147,127 @@
       Start Your Shift 🚀
     </button>
   </section>
- <!-- ========== TASK 1 – HAZARD HUNT ========== -->
-  <section id="task1"
-           class="hidden bg-white rounded-xl shadow-lg p-4 sm:p-6 space-y-6">
+<!-- ========== TASK 1 – HAZARD HUNT ========== -->
+<section id="task1"
+         class="hidden bg-white rounded-xl shadow-lg p-4 sm:p-6 space-y-6">
 
-    <!-- header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-      <h2 class="text-xl sm:text-2xl font-bold text-gray-900">
-        🔍 Task 1 – Hazard Hunt
-      </h2>
-      <span class="text-sm text-gray-600">
-        Found: <span id="hazards-found">0</span>/8
-      </span>
+  <!-- header -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+    <h2 class="text-xl sm:text-2xl font-bold text-gray-900">
+      🔍 Task 1 – Hazard Hunt
+    </h2>
+    <span class="text-sm text-gray-600">
+      Found: <span id="hazards-found">0</span>/8
+    </span>
+  </div>
+
+  <p class="text-gray-600">
+    Tap the apples 🍎 in the orchard to identify hazards.
+    For each hazard, describe what injury or illness it could cause.
+  </p>
+
+  <!-- orchard scene -->
+  <div id="orchard-scene"
+       class="relative rounded-lg bg-center bg-cover mx-auto"
+       style="background-image:url('images/orchard.jpg');height:60vw;max-height:500px;">
+
+    <!-- positions converted to % of 640×500 reference -->
+    <div class="hazard-apple" style="top:24%; left:18.75%;" data-hazard="1">🍎</div>
+    <div class="hazard-apple" style="top:20%; left:31.25%;" data-hazard="2">🍎</div>
+    <div class="hazard-apple" style="top:32%; left:50%;"   data-hazard="3">🍎</div>
+    <div class="hazard-apple" style="top:24%; left:71.875%;" data-hazard="4">🍎</div>
+    <div class="hazard-apple" style="top:16%; left:87.5%;"  data-hazard="5">🍎</div>
+    <div class="hazard-apple" style="top:30%; left:54.69%;" data-hazard="6">🍎</div>
+    <div class="hazard-apple" style="top:12%; left:14.06%;" data-hazard="7">🍎</div>
+    <div class="hazard-apple" style="top:36%; left:35.94%;" data-hazard="8">🍎</div>
+  </div>
+
+  <!-- hazard modal (now shows an IMAGE instead of a description) -->
+  <div id="hazard-modal" class="hazard-modal hidden">
+    <div class="bg-white rounded-xl shadow-2xl p-6 w-[90vw] max-w-md mx-2 space-y-4">
+      <div class="text-center space-y-1">
+        <div class="text-4xl">⚠️</div>
+        <h3 id="modal-hazard-title" class="text-lg font-bold text-gray-900">
+          Hazard Identified!
+        </h3>
+      </div>
+
+      <!-- NEW: image placeholder -->
+<img id="modal-hazard-image"
+     src=""
+     alt=""
+     class="square-img mx-auto" />
+
+      <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-md">
+        <p class="text-sm text-yellow-800">
+          <strong>Your task:</strong>
+          Describe the potential injury or illness this hazard could cause.
+        </p>
+      </div>
+
+      <!-- textarea gets real-time STT -->
+      <label for="hazard-description-input"
+             class="block text-sm font-medium text-gray-700 mb-1">
+        Describe the injury or illness:
+      </label>
+      <div class="flex items-start gap-2">
+        <textarea id="hazard-description-input"
+                  class="flex-1 p-3 border border-gray-300 rounded-lg speech-enabled"
+                  rows="3"
+                  placeholder="e.g., Falls from height could cause fractures…"></textarea>
+      </div>
+
+      <div class="flex gap-3 pt-2">
+        <button onclick="submitHazardDescription()"
+                class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg">
+          Submit ✅
+        </button>
+        <button onclick="closeHazardModal()"
+                class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 rounded-lg">
+          Cancel
+        </button>
+      </div>
     </div>
+  </div>
 
-    <p class="text-gray-600">
-      Tap the apples 🍎 in the orchard to identify hazards.
-      For each hazard describe what injury or illness it could cause.
-    </p>
+  <!-- list container & task complete -->
+  <div id="hazard-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
 
-    <!-- orchard scene -->
-    <!-- 🔄 MAJOR CHANGE: responsive h-[60vw] keeps aspect + %‑based apple coords -->
-    <div id="orchard-scene"
-         class="relative rounded-lg bg-center bg-cover mx-auto"
-         style="background-image:url('images/orchard.jpg');height:60vw;max-height:500px;">
-
-      <!-- positions converted to % of 640×500 reference -->
-      <div class="hazard-apple" style="top:24%; left:18.75%;" data-hazard="1">🍎</div>
-      <div class="hazard-apple" style="top:20%; left:31.25%;" data-hazard="2">🍎</div>
-      <div class="hazard-apple" style="top:32%; left:50%;" data-hazard="3">🍎</div>
-      <div class="hazard-apple" style="top:24%; left:71.875%;" data-hazard="4">🍎</div>
-      <div class="hazard-apple" style="top:16%; left:87.5%;" data-hazard="5">🍎</div>
-      <div class="hazard-apple" style="top:30%; left:54.69%;" data-hazard="6">🍎</div>
-      <div class="hazard-apple" style="top:12%; left:14.06%;" data-hazard="7">🍎</div>
-      <div class="hazard-apple" style="top:36%; left:35.94%;" data-hazard="8">🍎</div>
-    </div>
-
-    <!-- hazard modal -->
-    <div id="hazard-modal" class="hazard-modal hidden">
-      <div class="bg-white rounded-xl shadow-2xl p-6 w-[90vw] max-w-md mx-2 space-y-4">
-        <div class="text-center space-y-1">
-          <div class="text-4xl">⚠️</div>
-          <h3 id="modal-hazard-title" class="text-lg font-bold text-gray-900">
-            Hazard Identified!
-          </h3>
-        </div>
-
-        <p id="modal-hazard-description" class="text-gray-700 text-sm"></p>
-
-        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-md">
-          <p class="text-sm text-yellow-800">
-            <strong>Your task:</strong>
-            Describe the potential injury or illness this hazard could cause.
-          </p>
-        </div>
-
-        <!-- textarea gets real‑time STT -->
-        <label for="hazard-description-input"
-               class="block text-sm font-medium text-gray-700 mb-1">
-          Describe the injury or illness:
-        </label>
-        <div class="flex items-start gap-2">
-          <textarea id="hazard-description-input"
-                    class="flex-1 p-3 border border-gray-300 rounded-lg speech-enabled"
-                    rows="3"
-                    placeholder="e.g., Falls from height could cause fractures…"></textarea>
-        </div>
-
-        <div class="flex gap-3 pt-2">
-          <button onclick="submitHazardDescription()"
-                  class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg">
-            Submit ✅
-          </button>
-          <button onclick="closeHazardModal()"
-                  class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 rounded-lg">
-            Cancel
-          </button>
-        </div>
+  <button id="task1-complete" onclick="completeTask1()"
+          class="hidden bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">
+    Complete Hazard Hunt ✅
+  </button>
+</section>
+ 
+     <!-- Task 2: Image Picker Modal -->
+<div id="t2-image-picker" class="hazard-modal hidden">
+  <div class="bg-white rounded-xl shadow-2xl p-6 w-[94vw] max-w-3xl mx-2">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="text-lg font-bold">Pick your image</h3>
+      <div class="flex gap-2">
+        <button id="t2-random" class="px-3 py-1 rounded-lg border">🎲 Random Draw</button>
+        <button id="t2-help" class="px-3 py-1 rounded-lg border">❓Instructions</button>
+        <button type="button" onclick="closeT2Picker()" class="px-3 py-1 rounded-lg border">✖</button>
       </div>
     </div>
 
-    <!-- list container & task complete -->
-    <div id="hazard-list"
-         class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    <div id="t2-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+      <!-- Thumbs injected from t2Images[] -->
+    </div>
 
-    <button id="task1-complete" onclick="completeTask1()"
-            class="hidden bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">
-      Complete Hazard Hunt ✅
-    </button>
-  </section>
-</div> 
- 
-      <!-- Task 2: Eliminate vs Minimise (exactly 3) -->
-<div id="task2" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
- <li>🎯 <strong>Eliminate vs Minimise:</strong> Choose and describe controls</li>
-  <p class="text-gray-700 mb-4">
-    Pick <strong>exactly 3</strong> hazards (from Task 1). For each one:
-    <span class="font-semibold">choose Eliminate or Minimise</span> and
-    <span class="font-semibold">describe</span> the control you’d use.
-  </p>
-
-  <div class="bg-blue-50 border border-blue-200 p-3 rounded-lg text-sm text-blue-800 mb-4">
-    ✅ Mobile-friendly: tap to select & type. All three cards must be completed.
+    <div class="border-t pt-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-sm text-gray-600">Your pick:</span>
+        <img id="t2-picked-thumb" class="square-thumb hidden" alt="">
+        <span id="t2-picked-name" class="text-sm text-gray-700"></span>
+      </div>
+      <button id="t2-continue" class="bg-green-600 text-white font-semibold px-4 py-2 rounded-lg disabled:opacity-50" disabled>
+        Continue →
+      </button>
+    </div>
   </div>
-
-  <!-- Progress -->
-  <div class="flex items-center justify-between mb-3 text-sm text-gray-600">
-    <span>Cards complete:</span>
-    <span id="t2-progress">0/3</span>
-  </div>
-  <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
-    <div id="t2-bar" class="progress-bar bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full" style="width:0%"></div>
-  </div>
-
-  <!-- Three required cards -->
-  <div id="t2-cards" class="grid grid-cols-1 gap-4">
-    <!-- Cards injected by initializeTask2() -->
-  </div>
-
-  <button id="task2-complete"
-          onclick="completeTask2()"
-          class="hidden mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">
-    Submit Eliminate/Minimise ✅
-  </button>
 </div>
+
 
         <!-- Task 3: Accident Log Mini-Sim -->
         <div id="task3" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
@@ -632,6 +651,7 @@ function initializeTask5 () {
       <div id="pcbu-feedback-${cs.id}" class="mt-2 text-sm"></div>
     `;
     wrapper.appendChild(card);
+    
   });
 }
 
@@ -686,22 +706,14 @@ let gameState = {
 };
 
 const hazards = {
-  1: { name: "Unstable ladder placement",
-       description: "The ladder is positioned at an unsafe angle near the apple tree" },
-  2: { name: "Overhead power lines",
-       description: "Electrical power lines run close to the orchard work area" },
-  3: { name: "Unguarded machinery",
-       description: "The tractor has exposed moving parts and no safety guards" },
-  4: { name: "Wet/slippery ground",
-       description: "The ground appears wet and muddy from irrigation" },
-  5: { name: "Chemical storage",
-       description: "Pesticide containers are stored in the work area" },
-  6: { name: "Sharp pruning tools",
-       description: "Cutting tools are left unsecured in the toolbox" },
-  7: { name: "Noise from equipment",
-       description: "The tractor and other machinery create high noise levels" },
-  8: { name: "Manual handling",
-       description: "Workers are lifting heavy apple crates without assistance" }
+  1: { name: "hazard 1", img: "images/h1.png", alt: "h1" },
+  2: { name: "hazard 2", img: "images/h2.png", alt: "h2" },
+  3: { name: "hazard 3", img: "images/h3.png", alt: "h3" },
+  4: { name: "hazard 4", img: "images/h4.png", alt: "h4" },
+  5: { name: "hazard 5", img: "images/h5.png", alt: "h5" },
+  6: { name: "hazard 6", img: "images/h6.png", alt: "h6" },
+  7: { name: "hazard 7", img: "images/h7.png", alt: "h7" },
+  8: { name: "hazard 8", img: "images/h8.png", alt: "h8" }
 };
 
 const controlMeasures = [
@@ -725,14 +737,18 @@ function showTask(taskNumber) {
     const el = document.getElementById(`task${i}`);
     if (el) el.classList.add('hidden');
   }
-  document.getElementById(`task${taskNumber}`).classList.remove('hidden');
+  // Only reveal Task 2 after image is chosen
+  if (taskNumber !== 2) {
+    document.getElementById(`task${taskNumber}`).classList.remove('hidden');
+  }
   gameState.currentTask = taskNumber;
 
   if (taskNumber === 1) initializeTask1();
-  if (taskNumber === 2) initializeTask2();
+  if (taskNumber === 2) openT2Picker();           // ← changed
   if (taskNumber === 4) initializeTask4();
-  if (taskNumber === 5) initializeTask5();         
+  if (taskNumber === 5) initializeTask5();
 }
+
 
 /* --------------  TASK 1 (Hazard Apples)  -------------- */
 function initializeTask1() {
@@ -751,10 +767,19 @@ function openHazardModal(hazardId, element) {
 
   const hazard = hazards[hazardId];
   document.getElementById('modal-hazard-title').textContent = hazard.name;
-  document.getElementById('modal-hazard-description').textContent = hazard.description;
+
+  // NEW: populate the image
+  const img = document.getElementById('modal-hazard-image');
+  if (img) {
+    img.src = hazard.img;
+    img.alt = hazard.alt || hazard.name;
+  }
+
+  // clear input & show modal
   document.getElementById('hazard-description-input').value = '';
   document.getElementById('hazard-modal').classList.remove('hidden');
 }
+
 function closeHazardModal() {
   document.getElementById('hazard-modal').classList.add('hidden');
   gameState.currentHazardId = null;
@@ -777,10 +802,16 @@ function submitHazardDescription() {
   const hazardDiv = document.createElement('div');
   hazardDiv.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4';
   hazardDiv.innerHTML = `
+  <div class="flex items-start gap-3">
+<img src="${hazard.img}" alt="${hazard.alt || hazard.name}"
+     class="square-thumb">
+    <div>
       <h4 class="font-semibold text-blue-800">🍎 ${hazard.name}</h4>
       <p class="text-sm text-blue-600 mb-2"><strong>Student Response:</strong> ${description}</p>
       <p class="text-xs text-gray-500">Submitted for teacher review</p>
-  `;
+    </div>
+  </div>
+`;
   hazardList.appendChild(hazardDiv);
 
   document.getElementById('hazards-found').textContent = gameState.hazardsFound.length;
@@ -796,8 +827,75 @@ function completeTask1() {
   showTask(2);
 }
 
-/* --------------  TASK 2 (Eliminate vs Minimise, exactly 3)  -------------- */
-function initializeTask2() {
+/* --------------  TASK 2 (Eliminate vs Minimise, with Image Picker)  -------------- */
+
+// ---------- Task 2: Image selection ----------
+const t2Images = [
+  { id: 'img_packhouse', name: 'Packhouse Floor', src: 'images/t2_packhouse.png', diff: 2 },
+  { id: 'img_row',      name: 'Orchard Row',     src: 'images/t2_row.png',       diff: 1 },
+  { id: 'img_workshop', name: 'Workshop',        src: 'images/t2_workshop.png',  diff: 3 },
+];
+
+let t2ChosenImage = null;
+
+function openT2Picker() {
+  const grid = document.getElementById('t2-grid');
+  grid.innerHTML = '';
+  t2ChosenImage = null;
+
+  t2Images.forEach(img => {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'text-left p-2 border rounded-lg hover:shadow focus:ring outline-none';
+    card.setAttribute('aria-label', `Select image: ${img.name}`);
+    card.innerHTML = `
+      <img src="${img.src}" alt="${img.name}" class="square-thumb mb-2">
+      <div class="text-sm font-medium">${img.name}</div>
+      <div class="text-xs text-gray-500">${'⭐'.repeat(img.diff)}</div>
+    `;
+    card.addEventListener('click', () => pickT2(img));
+    grid.appendChild(card);
+  });
+
+  // Reset picker footer
+  document.getElementById('t2-picked-thumb').classList.add('hidden');
+  document.getElementById('t2-picked-name').textContent = '';
+  document.getElementById('t2-continue').disabled = true;
+
+  // Wire picker buttons
+  document.getElementById('t2-random').onclick = () => {
+    const img = t2Images[Math.floor(Math.random() * t2Images.length)];
+    pickT2(img);
+  };
+  document.getElementById('t2-help').onclick = () => alert(
+    'Choose one image (or Random Draw). Then complete 3 control cards: pick Eliminate or Minimise and write a 1–2 sentence control for each hazard.'
+  );
+  document.getElementById('t2-continue').onclick = () => {
+    closeT2Picker();
+    document.getElementById('task2').classList.remove('hidden');
+    initializeTask2(t2ChosenImage);
+  };
+
+  // Show the modal
+  document.getElementById('t2-image-picker').classList.remove('hidden');
+}
+
+function closeT2Picker() {
+  document.getElementById('t2-image-picker').classList.add('hidden');
+}
+
+function pickT2(img) {
+  t2ChosenImage = img;
+  const pThumb = document.getElementById('t2-picked-thumb');
+  pThumb.src = img.src;
+  pThumb.alt = img.name;
+  pThumb.classList.remove('hidden');
+  document.getElementById('t2-picked-name').textContent = img.name;
+  document.getElementById('t2-continue').disabled = false;
+}
+
+// ---------- Task 2 main ----------
+function initializeTask2(chosenImage) {
   // Build 3 empty response slots
   gameState.task2Responses = [
     { hazardId: '', choice: '', description: '' },
@@ -808,6 +906,26 @@ function initializeTask2() {
   const container = document.getElementById('t2-cards');
   container.innerHTML = '';
 
+  // Show the chosen image banner above the cards
+  if (chosenImage) {
+    // Remove an existing banner if present (avoid duplicates on re-init)
+    const oldBanner = document.getElementById('t2-banner');
+    if (oldBanner) oldBanner.remove();
+
+    const banner = document.createElement('div');
+    banner.id = 't2-banner';
+    banner.className = 'mb-3 flex items-center gap-3';
+    banner.innerHTML = `
+      <img src="${chosenImage.src}" alt="${chosenImage.name}" class="square-thumb">
+      <div>
+        <div class="text-sm font-semibold">${chosenImage.name}</div>
+        <div class="text-xs text-gray-500">Work with this image for your 3 controls.</div>
+      </div>`;
+    // Insert before the cards wrapper
+    const t2CardsWrapper = document.getElementById('t2-cards');
+    t2CardsWrapper.parentElement.insertBefore(banner, t2CardsWrapper);
+  }
+
   // Options come from hazards found in Task 1; if empty, fall back to all hazards
   const availableIds = gameState.hazardsFound.length
     ? gameState.hazardsFound
@@ -817,6 +935,7 @@ function initializeTask2() {
     `<option value="${id}">🍎 ${hazards[id].name}</option>`
   ).join('');
 
+  // Create three cards
   for (let i = 0; i < 3; i++) {
     const card = document.createElement('div');
     card.className = 'rounded-xl border border-gray-200 p-4 bg-gray-50';
@@ -848,7 +967,7 @@ function initializeTask2() {
   // Style for choice buttons (mobile friendly)
   injectT2ChoiceStyles();
 
-  // Wire up handlers
+  // Wire up handlers for this run
   document.querySelectorAll('.t2-choice').forEach(btn => {
     btn.addEventListener('click', () => {
       const slot = parseInt(btn.dataset.slot, 10);
@@ -864,6 +983,79 @@ function initializeTask2() {
   }
 
   validateT2();
+}
+
+function setT2Choice(slot, value) {
+  gameState.task2Responses[slot].choice = value;
+
+  // Toggle visual active state
+  const group = document.querySelectorAll(`.t2-choice[data-slot="${slot}"]`);
+  group.forEach(b => b.classList.remove('active'));
+  const picked = document.querySelector(`.t2-choice[data-slot="${slot}"][data-value="${value}"]`);
+  if (picked) picked.classList.add('active');
+}
+
+function validateT2() {
+  let complete = 0;
+
+  for (let i = 0; i < 3; i++) {
+    const hSel = document.getElementById(`t2-h-${i}`);
+    const txt  = document.getElementById(`t2-d-${i}`);
+    const ok   = document.getElementById(`t2-ok-${i}`);
+
+    gameState.task2Responses[i].hazardId    = hSel.value;
+    gameState.task2Responses[i].description = txt.value.trim();
+
+    const good = hSel.value && gameState.task2Responses[i].choice &&
+                 gameState.task2Responses[i].description.length >= 12;
+
+    ok.classList.toggle('hidden', !good);
+    if (good) complete++;
+  }
+
+  // Progress UI
+  const pct = (complete / 3) * 100;
+  document.getElementById('t2-progress').textContent = `${complete}/3`;
+  document.getElementById('t2-bar').style.width = `${pct}%`;
+
+  // Only show submit when all 3 are complete (exactly three; no extras exist)
+  document.getElementById('task2-complete').classList.toggle('hidden', complete !== 3);
+}
+
+function completeTask2() {
+  // Freeze inputs (summative)
+  document.querySelectorAll('#t2-cards select, #t2-cards textarea, #t2-cards .t2-choice')
+          .forEach(el => el.disabled = true);
+
+  // Confirmation panel
+  const conf = document.createElement('div');
+  conf.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4 text-sm text-blue-700';
+  conf.innerHTML = `✅ Your three Eliminate/Minimise decisions & descriptions have been recorded for teacher review.`;
+  document.querySelector('#task2').appendChild(conf);
+
+  if (!gameState.completedTasks.includes(2)) {
+    gameState.completedTasks.push(2);
+    updateProgress();
+  }
+  showTask(3);
+}
+
+function injectT2ChoiceStyles() {
+  if (document.getElementById('t2-choice-style')) return;
+  const s = document.createElement('style');
+  s.id = 't2-choice-style';
+  s.textContent = `
+    .btn-choice {
+      display:inline-flex;align-items:center;justify-content:center;
+      border:2px solid #d1d5db;border-radius:.75rem;padding:.6rem .8rem;
+      background:#fff;color:#1f2937;font-weight:600
+    }
+    .btn-choice.active { border-color:#16a34a;background:#dcfce7;color:#166534 }
+    @media (max-width:640px){
+      .btn-choice{ padding: .75rem .9rem; }
+    }
+  `;
+  document.head.appendChild(s);
 }
 
 function setT2Choice(slot, value) {

@@ -6,80 +6,112 @@
   <title>Safety Supervisor Challenge – Health & Safety</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-..."
-        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      crossorigin="anonymous" referrerpolicy="no-referrer">
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-    .control-item,.emergency-step{       
-    touch-action: none;
-  }
-  @media (max-width:640px){
-    .drop-zone{ min-height:80px; }   
-  }
-    html{
-      font-size:clamp(0.875rem,0.9rem+0.25vw,1.125rem);
-    }
-    body{font-family:'Inter',sans-serif;}
-    .hazard-apple{
-      position:absolute;
-      width:7vw;max-width:35px;min-width:28px;
-      aspect-ratio:1/1;
-      display:flex;align-items:center;justify-content:center;
-      cursor:pointer;font-size:6vw;font-size:28px;
-      animation:sway 3s ease-in-out infinite;
-      transition:transform .3s,filter .3s;
-    }
-    .hazard-apple:hover{transform:scale(1.2);filter:brightness(1.2);}
-    @keyframes sway{0%,100%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}}
-    .found-apple{animation:none!important;opacity:.5;}
-    #orchard-scene{overflow:hidden;}
-    .hazard-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-      background:rgba(0,0,0,.55);z-index:1000;}
-    .control-item{transition:transform .25s,box-shadow .25s;}
-    .control-item:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgb(0 0 0 / .15);}
-    .drop-zone{min-height:60px;border:2px dashed #d1d5db;transition:all .3s;}
-    .drop-zone.drag-over{border-color:#3b82f6;background-color:rgb(59 130 246 / .1);}
-    .progress-bar{transition:width .6s;}
-    .badge{animation:bounceIn .6s;}
-    @keyframes bounceIn{0%{transform:scale(0);}50%{transform:scale(1.1);}100%{transform:scale(1);}}
-    .mic-btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      width:2.5rem;height:2.5rem;
-      border-radius:.75rem;
-      background:#e0f2fe;color:#0369a1;
-      transition:background .3s;
-    }
-    .mic-btn:hover{background:#bae6fd;}
-    .mic-btn.recording{background:#fef08a;color:#92400e;}
-    .safe-container{max-width:90rem;margin-inline:auto;padding-inline:1rem;}
-    .ear-btn{
-  background:none; border:0; padding:0;
-  cursor:pointer; font-size:0.9em;
+   /* ===== Base type & layout ===== */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+html{ font-size:clamp(0.875rem,0.9rem+0.25vw,1.125rem); }
+body{ font-family:'Inter',sans-serif; }
+.safe-container{ max-width:90rem; margin-inline:auto; padding-inline:1rem; }
+
+/* ===== Progress bar animation ===== */
+.progress-bar{ transition:width .6s; }
+
+/* ===== Task 1: Hazard apples ===== */
+#orchard-scene{ overflow:hidden; }
+.hazard-apple{
+  position:absolute;
+  width:7vw; max-width:35px; min-width:28px; aspect-ratio:1/1;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:28px;
+  animation:sway 3s ease-in-out infinite;
+  transition:transform .3s, filter .3s;
 }
-.ear-btn:hover{ color:#0369a1; }
-/* Square, no-crop images */
-.square-img {
-  aspect-ratio: 1 / 1;
-  width: 100%;
-  max-width: 16rem;         /* modal max size */
-  object-fit: contain;      /* don't crop */
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
-  border-radius: .5rem;
-  padding: .5rem;
+.hazard-apple:hover{ transform:scale(1.2); filter:brightness(1.2); }
+@keyframes sway{ 0%,100%{transform:rotate(-2deg);} 50%{transform:rotate(2deg);} }
+.found-apple{ animation:none !important; opacity:.5; }
+
+/* ===== Generic modal wrapper (Task 1 & Task 2) ===== */
+.hazard-modal{
+  position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.55); z-index:1000;
 }
 
-/* Smaller square thumbnail for the list */
-.square-thumb {
-  aspect-ratio: 1 / 1;
-  width: 4.5rem;            /* ~w-18 */
-  object-fit: contain;      /* don't crop */
-  background: #f8fafc;
-  border: 1px solid #bfdbfe;/* matches your blue border vibe */
-  border-radius: .375rem;
-  padding: .25rem;
+/* ===== A11y buttons (TTS / STT) ===== */
+.mic-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:2.5rem; height:2.5rem; border-radius:.75rem;
+  background:#e0f2fe; color:#0369a1; transition:background .3s;
 }
+.mic-btn:hover{ background:#bae6fd; }
+.mic-btn.recording{ background:#fef08a; color:#92400e; }
+.ear-btn{ background:none; border:0; padding:0; cursor:pointer; font-size:.9em; }
+.ear-btn:hover{ color:#0369a1; }
+
+/* ===== Image framing (modal & cards) ===== */
+.square-img{
+  aspect-ratio:1/1; width:100%; max-width:16rem; object-fit:contain;
+  background:#f8fafc; border:1px solid #e5e7eb; border-radius:.5rem; padding:.5rem;
+}
+.square-thumb{
+  aspect-ratio:1/1; width:4.5rem; object-fit:contain;
+  background:#f8fafc; border:1px solid #bfdbfe; border-radius:.375rem; padding:.25rem;
+}
+
+/* ===== Task 2: Kiwifruit inside the crate ===== */
+#t2-bin{
+  background:url('images/harvest.png') center/cover no-repeat;
+  height:56vw; max-height:440px; position:relative;
+}
+/* Mobile: keep full image visible so hotspot alignment stays true */
+@media (max-width:640px){
+  #t2-bin{
+    background-size:contain;
+    background-position:top center;
+    height:auto;
+    aspect-ratio:1440/960; /* set to your harvest.png ratio */
+  }
+}
+/* Crate opening hotspot (buttons live inside this) */
+#crate-hotspot{
+  position:absolute;
+  left:33.5%; top:20.5%; width:33%; height:45%;
+  clip-path:polygon(6% 5%, 94% 12%, 92% 85%, 8% 78%);
+  transform:perspective(900px) rotateX(14deg) rotateZ(-3deg);
+  transform-origin:50% 0%;
+  pointer-events:none;
+}
+#crate-hotspot > .fruit{ pointer-events:auto; }
+/* Fruit buttons */
+#t2-bin .fruit{
+  position:absolute; transform:translate(-50%,-50%) scale(var(--depth,1));
+  width:42px; height:42px; display:flex; align-items:center; justify-content:center;
+  font-size:28px; background:transparent; border:0; cursor:pointer;
+  filter:drop-shadow(0 2px 2px rgb(0 0 0 / .15));
+  transition:transform .2s, opacity .2s;
+}
+#t2-bin .fruit:hover{ transform:translate(-50%,-50%) scale(calc(var(--depth,1)*1.1)); }
+#t2-bin .fruit.used{ opacity:.35; pointer-events:none; }
+/* Optional: front rim overlay (requires images/harvest-rim.png) */
+#t2-bin::after{
+  content:""; position:absolute; inset:0;
+  background:url('images/harvest-rim.png') center/cover no-repeat;
+  pointer-events:none;
+}
+
+/* ===== Task 4: Tap-to-order (summative, no feedback) ===== */
+.t4-card{
+  background:#eef2ff; border:2px solid #c7d2fe; border-radius:.75rem;
+  padding:.75rem; font-size:.95rem; line-height:1.2; cursor:pointer;
+  user-select:none; touch-action:manipulation;
+}
+.t4-card:active{ transform:scale(.98); }
+.t4-slot{
+  min-height:3.25rem; display:flex; align-items:center; justify-content:center;
+  border:2px dashed #cbd5e1; border-radius:.75rem; background:#f8fafc; color:#64748b;
+}
+.t4-slot.filled{ border-style:solid; border-color:#94a3b8; background:#f1f5f9; color:#0f172a; }
   </style>
 </head>
 
@@ -102,7 +134,6 @@
       </div>
     </div>
   </div>
-
   <!-- Progress -->
   <div class="safe-container">
     <div class="mt-2 flex justify-between text-xs sm:text-sm text-gray-600">
@@ -116,7 +147,6 @@
   </div>
 </header>
 <main class="safe-container py-8">
-
   <!-- ========== WELCOME ========== -->
   <section id="welcome-screen"
            class="bg-white rounded-xl shadow-lg p-6 sm:p-8 text-center space-y-6">
@@ -140,7 +170,6 @@
         <li>⚖️ <strong>PCBU Duty Check:</strong> Evaluate duty‑of‑care cases</li>
       </ul>
     </div>
-
     <button onclick="startAssessment()"
             class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg
                    text-lg transition-colors">
@@ -239,214 +268,158 @@
   </button>
 </section>
  
-     <!-- Task 2: Image Picker Modal -->
-<div id="t2-image-picker" class="hazard-modal hidden">
-  <div class="bg-white rounded-xl shadow-2xl p-6 w-[94vw] max-w-3xl mx-2">
-    <div class="flex items-center justify-between mb-3">
-      <h3 class="text-lg font-bold">Pick your image</h3>
-      <div class="flex gap-2">
-        <button id="t2-random" class="px-3 py-1 rounded-lg border">🎲 Random Draw</button>
-        <button id="t2-help" class="px-3 py-1 rounded-lg border">❓Instructions</button>
-        <button type="button" onclick="closeT2Picker()" class="px-3 py-1 rounded-lg border">✖</button>
+   <!-- TASK 2 – Merged NZQA-compliant version (click 3 fruit -> collect minimise & eliminate) -->
+<section id="task2" class="hidden bg-white rounded-xl shadow-lg p-4 sm:p-6 space-y-6">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+    <h2 class="text-xl sm:text-2xl font-bold text-gray-900">🥝 Task 2 – Hazard Control Measures</h2>
+    <div class="text-sm text-gray-600">Completed: <span id="t2-count">0</span>/3</div>
+  </div>
+  <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
+    <p class="text-blue-800"><strong>Objective:</strong> Click <strong>three kiwifruit</strong> in the image below to reveal hazards. For each hazard, describe <strong>both</strong> how to <em>minimise</em> and <em>eliminate</em> the risk. <em>No instant feedback</em> – your assessor will review your responses.</p>
+  </div>
+  <div>
+    <label class="block text-sm font-medium text-gray-700 mb-2">1) Click three different kiwifruit:</label>
+    <div id="t2-bin" class="rounded-lg overflow-hidden border bg-white">
+      <div id="crate-hotspot" aria-label="Crate hotspot"></div>
+    </div>
+    <p class="text-xs text-gray-500 mt-2">Each click reveals a random hazard image and a form to enter <strong>Minimise</strong> and <strong>Eliminate</strong> strategies.</p>
+  </div>
+  <div id="t2-responses" class="grid grid-cols-1 gap-3"></div>
+  <button id="task2-complete" class="hidden bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">Complete Task 2 ✅</button>
+</section>
+
+<!-- Task 3: Accident Log Mini-Sim -->
+<div id="task3" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
+  <h2 class="text-2xl font-bold text-gray-900 mb-6">📋 Task 3: Accident Log Mini-Sim</h2>
+
+  <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+    <h3 class="font-semibold text-red-800 mb-2">⚠️ Incident Report</h3>
+    <p class="text-red-700">A worker has slipped on wet concrete near the pack house and twisted their ankle. They can walk but are in pain. Complete the formal reporting process.</p>
+  </div>
+
+  <div class="space-y-6">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">1. Choose 1 of the processes that should be done:</label>
+      <div class="space-y-2">
+        <label class="flex items-center">
+          <input type="radio" name="form-type" value="incident" class="mr-2">
+          <span>Incident/Accident Report Form</span>
+        </label>
+        <label class="flex items-center">
+          <input type="radio" name="form-type" value="hazard" class="mr-2">
+          <span>Hazard Report Form</span>
+        </label>
+        <label class="flex items-center">
+          <input type="radio" name="form-type" value="inspection" class="mr-2">
+          <span>Safety Inspection Form</span>
+        </label>
       </div>
     </div>
 
-    <div id="t2-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
-      <!-- Thumbs injected from t2Images[] -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">2. Key details to record (select all that apply):</label>
+      <div class="space-y-2">
+        <label class="flex items-center">
+          <input type="checkbox" name="details" value="time-date" class="mr-2">
+          <span>Time and date of incident</span>
+        </label>
+        <label class="flex items-center">
+          <input type="checkbox" name="details" value="location" class="mr-2">
+          <span>Exact location where incident occurred</span>
+        </label>
+        <label class="flex items-center">
+          <input type="checkbox" name="details" value="witnesses" class="mr-2">
+          <span>Names of witnesses</span>
+        </label>
+        <label class="flex items-center">
+          <input type="checkbox" name="details" value="weather" class="mr-2">
+          <span>Weather conditions</span>
+        </label>
+        <label class="flex items-center">
+          <input type="checkbox" name="details" value="injury" class="mr-2">
+          <span>Nature and extent of injury</span>
+        </label>
+      </div>
     </div>
 
-    <div class="border-t pt-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <span class="text-sm text-gray-600">Your pick:</span>
-        <img id="t2-picked-thumb" class="square-thumb hidden" alt="">
-        <span id="t2-picked-name" class="text-sm text-gray-700"></span>
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">3. Who must be notified immediately?</label>
+      <div class="space-y-2">
+        <label class="flex items-center">
+          <input type="radio" name="notify" value="worksafe" class="mr-2">
+          <span>WorkSafe New Zealand only</span>
+        </label>
+        <label class="flex items-center">
+          <input type="radio" name="notify" value="supervisor" class="mr-2">
+          <span>Immediate supervisor/manager</span>
+        </label>
+        <label class="flex items-center">
+          <input type="radio" name="notify" value="police" class="mr-2">
+          <span>New Zealand Police</span>
+        </label>
       </div>
-      <button id="t2-continue" class="bg-green-600 text-white font-semibold px-4 py-2 rounded-lg disabled:opacity-50" disabled>
-        Continue →
-      </button>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">4. When must WorkSafe NZ be notified for this type of incident?</label>
+      <div class="space-y-2">
+        <label class="flex items-center">
+          <input type="radio" name="worksafe-timing" value="immediately" class="mr-2">
+          <span>Immediately (this is a notifiable incident)</span>
+        </label>
+        <label class="flex items-center">
+          <input type="radio" name="worksafe-timing" value="48hours" class="mr-2">
+          <span>Within 48 hours</span>
+        </label>
+        <label class="flex items-center">
+          <input type="radio" name="worksafe-timing" value="not-required" class="mr-2">
+          <span>Not required for this incident</span>
+        </label>
+      </div>
     </div>
   </div>
-</div>
 
+  <button onclick="checkTask3()" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">
+    Submit Report 📝
+  </button>
 
-        <!-- Task 3: Accident Log Mini-Sim -->
-        <div id="task3" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">📋 Task 3: Accident Log Mini-Sim</h2>
-            
-            <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
-                <h3 class="font-semibold text-red-800 mb-2">⚠️ Incident Report</h3>
-                <p class="text-red-700">A worker has slipped on wet concrete near the pack house and twisted their ankle. They can walk but are in pain. Complete the formal reporting process.</p>
-            </div>
-            
-            <div class="space-y-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">1. What type of form should be completed?</label>
-                    <div class="space-y-2">
-                        <label class="flex items-center">
-                            <input type="radio" name="form-type" value="incident" class="mr-2">
-                            <span>Incident/Accident Report Form</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="form-type" value="hazard" class="mr-2">
-                            <span>Hazard Report Form</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="form-type" value="inspection" class="mr-2">
-                            <span>Safety Inspection Form</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">2. Key details to record (select all that apply):</label>
-                    <div class="space-y-2">
-                        <label class="flex items-center">
-                            <input type="checkbox" name="details" value="time-date" class="mr-2">
-                            <span>Time and date of incident</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="details" value="location" class="mr-2">
-                            <span>Exact location where incident occurred</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="details" value="witnesses" class="mr-2">
-                            <span>Names of witnesses</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="details" value="weather" class="mr-2">
-                            <span>Weather conditions</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="details" value="injury" class="mr-2">
-                            <span>Nature and extent of injury</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">3. Who must be notified immediately?</label>
-                    <div class="space-y-2">
-                        <label class="flex items-center">
-                            <input type="radio" name="notify" value="worksafe" class="mr-2">
-                            <span>WorkSafe New Zealand only</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="notify" value="supervisor" class="mr-2">
-                            <span>Immediate supervisor/manager</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="notify" value="police" class="mr-2">
-                            <span>New Zealand Police</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">4. When must WorkSafe NZ be notified for this type of incident?</label>
-                    <div class="space-y-2">
-                        <label class="flex items-center">
-                            <input type="radio" name="worksafe-timing" value="immediately" class="mr-2">
-                            <span>Immediately (this is a notifiable incident)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="worksafe-timing" value="48hours" class="mr-2">
-                            <span>Within 48 hours</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="worksafe-timing" value="not-required" class="mr-2">
-                            <span>Not required for this incident</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            
-            <button onclick="checkTask3()" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">
-                Submit Report 📝
-            </button>
-            
-            <button id="task3-complete" onclick="completeTask3()" class="hidden mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">
-                Complete Accident Log ✅
-            </button>
-        </div>
-
-        <!-- Task 4: Emergency Dash -->
-        <div id="task4" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">🚨 Task 4: Emergency Dash</h2>
-            
-            <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
-                <h3 class="font-semibold text-red-800 mb-2">🚨 Emergency Situation</h3>
-                <p class="text-red-700">A worker has been seriously injured by machinery and is unconscious. You are first on scene. Put the emergency procedures in the correct order.</p>
-            </div>
-            
-            <div class="mb-6">
-                <h4 class="font-semibold text-gray-800 mb-3">Drag the steps into the correct order (1-6):</h4>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-3">
-                        <h5 class="font-medium text-gray-700">Emergency Steps (drag these):</h5>
-                        <div id="emergency-steps" class="space-y-2">
-                            <div class="emergency-step bg-blue-100 border border-blue-300 rounded-lg p-3 cursor-move" draggable="true" data-step="isolate">
-                                🚧 Isolate the area and ensure scene safety
-                            </div>
-                            <div class="emergency-step bg-blue-100 border border-blue-300 rounded-lg p-3 cursor-move" draggable="true" data-step="assess">
-                                🩺 Check for responsiveness and breathing
-                            </div>
-                            <div class="emergency-step bg-blue-100 border border-blue-300 rounded-lg p-3 cursor-move" draggable="true" data-step="call111">
-                                📞 Call 111 for emergency services
-                            </div>
-                            <div class="emergency-step bg-blue-100 border border-blue-300 rounded-lg p-3 cursor-move" draggable="true" data-step="firstaid">
-                                🏥 Provide first aid as trained
-                            </div>
-                            <div class="emergency-step bg-blue-100 border border-blue-300 rounded-lg p-3 cursor-move" draggable="true" data-step="notify">
-                                📋 Notify supervisor and WorkSafe NZ
-                            </div>
-                            <div class="emergency-step bg-blue-100 border border-blue-300 rounded-lg p-3 cursor-move" draggable="true" data-step="preserve">
-                                🔍 Preserve scene for investigation
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-3">
-                        <h5 class="font-medium text-gray-700">Correct Order:</h5>
-                        <div id="emergency-sequence" class="space-y-2">
-                            <div class="drop-zone bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-3 text-center text-gray-500 min-h-16" data-position="1">
-                                Step 1: Drop here
-                            </div>
-                            <div class="drop-zone bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-3 text-center text-gray-500 min-h-16" data-position="2">
-                                Step 2: Drop here
-                            </div>
-                            <div class="drop-zone bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-3 text-center text-gray-500 min-h-16" data-position="3">
-                                Step 3: Drop here
-                            </div>
-                            <div class="drop-zone bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-3 text-center text-gray-500 min-h-16" data-position="4">
-                                Step 4: Drop here
-                            </div>
-                            <div class="drop-zone bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-3 text-center text-gray-500 min-h-16" data-position="5">
-                                Step 5: Drop here
-                            </div>
-                            <div class="drop-zone bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-3 text-center text-gray-500 min-h-16" data-position="6">
-                                Step 6: Drop here
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <button onclick="checkTask4()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">
-                Check Emergency Sequence 🚨
-            </button>
-            
-            <button id="task4-complete" onclick="completeTask4()" class="hidden mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">
-                Complete Emergency Dash ✅
-            </button>
-            <!-- Add inside Task 4, below the sequence list -->
-<div class="mt-2">
-  <button type="button" onclick="clearEmergencySequence()"
-          class="text-sm underline text-gray-600 hover:text-gray-800">
-    Clear sequence
+  <button id="task3-complete" onclick="completeTask3()" class="hidden mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">
+    Complete Accident Log ✅
   </button>
 </div>
-        </div>
+
+<!-- Task 4: Emergency Dash -->
+<div class="hidden bg-white rounded-xl shadow-lg p-6 mb-8" id="task4">
+
+  <h2 class="text-2xl font-bold text-gray-900 mb-4">🚨 Task 4: Emergency Dash</h2>
+
+  <p class="text-sm text-gray-600 mb-4">Tap the steps to place them in order (1–6). You can undo or clear if you change your mind.</p>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <!-- pool -->
+    <div>
+      <h4 class="font-medium text-gray-800 mb-2">Emergency Steps</h4>
+      <div id="t4-pool" class="grid grid-cols-1 gap-2"></div>
+    </div>
+
+    <!-- sequence -->
+    <div>
+      <h4 class="font-medium text-gray-800 mb-2">Your Order</h4>
+      <div id="t4-slots" class="grid grid-cols-1 gap-2"></div>
+
+      <div class="flex flex-wrap gap-2 mt-3">
+        <button type="button" class="px-3 py-2 rounded-lg border" onclick="t4Undo()">↩️ Undo</button>
+        <button type="button" class="px-3 py-2 rounded-lg border" onclick="t4Clear()">🧹 Clear</button>
+        <button type="button" class="px-3 py-2 rounded-lg border" onclick="t4Shuffle()">🔀 Shuffle</button>
+      </div>
+    </div>
+  </div>
+
+  <button id="task4-complete" onclick="completeTask4()"
+          class="hidden mt-6 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg">
+    Complete Emergency Dash ✅
+  </button>
+</div>
 
 <!-- Task 5: Safety Court Simulation -->
 <div id="task5" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
@@ -582,15 +555,44 @@
   </div>
 </div>
 
+<!-- Task 2 response modal (collects BOTH minimise & eliminate) -->
+<div id="t2-modal" class="hazard-modal hidden" role="dialog" aria-modal="true" aria-labelledby="t2-modal-title">
+  <div class="bg-white rounded-xl shadow-2xl p-6 w-[92vw] max-w-2xl mx-2 space-y-4">
+    <div class="flex items-center justify-between">
+      <div class="space-y-1">
+        <h3 id="t2-modal-title" class="text-lg font-bold text-gray-900">Hazard</h3>
+        <p class="text-xs text-gray-500">Provide <strong>both</strong> control strategies.</p>
+      </div>
+      <button type="button" id="t2-close" class="px-3 py-1 rounded-lg border">✖</button>
+    </div>
+    <div class="flex items-start gap-4">
+      <img id="t2-modal-img" src="" alt="" class="square-img" />
+      <div class="flex-1 grid grid-cols-1 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Minimise – how to reduce the risk</label>
+          <textarea id="t2-minimise" rows="3" class="w-full border border-gray-300 rounded-lg p-2" placeholder="e.g., Use non-slip mats and schedule rest breaks to reduce fatigue."></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Eliminate – how to remove the risk completely</label>
+          <textarea id="t2-eliminate" rows="3" class="w-full border border-gray-300 rounded-lg p-2" placeholder="e.g., Remove damaged ladders from service and use a cherry picker."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="flex gap-3 pt-2">
+      <button id="t2-save" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg">Save Response ✅</button>
+      <button id="t2-cancel" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 rounded-lg">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!--  MASTER GAME SCRIPT -->
 <script>
-
 const pcbuCases = [
   {
     id: 1,
     title: 'Training & Supervision',
     story: `Kiwi Orchard Ltd has hired five new seasonal workers for harvest.
-            The manager gives them a 10‑minute safety briefing on day one,
+            The manager gives them a 10-minute safety briefing on day one,
             hands out safety glasses and gloves, then assigns them to work
             with experienced pickers. No formal training records are kept and
             there’s no ongoing supervision during the busy period.`,
@@ -607,7 +609,7 @@ const pcbuCases = [
     title: 'Hazard Management',
     story: `Apple Valley Orchards conducts monthly safety inspections and keeps
             a hazard register. When workers report a broken ladder, it is
-            removed from service and replaced within 24 hours. Comprehensive
+            removed from service and replaced within 24 hours. Comprehensive
             safety training, regular toolbox talks and clear reporting
             procedures are in place. All incidents are investigated and
             corrective actions implemented.`,
@@ -630,12 +632,12 @@ function initializeTask5 () {
   updatePCBUHUD();
 
   const wrapper = document.getElementById('pcbu-cases');
+  if (!wrapper) return;            // guard if no dynamic container exists
   wrapper.innerHTML = '';
 
   pcbuCases.forEach(cs => {
     const card = document.createElement('div');
     card.className = 'border border-gray-200 rounded-lg p-4 bg-gray-50';
-
     card.innerHTML = `
       <h4 class="font-semibold text-gray-800 mb-2">${cs.title}</h4>
       <p class="text-gray-700 mb-4">${cs.story}</p>
@@ -651,7 +653,6 @@ function initializeTask5 () {
       <div id="pcbu-feedback-${cs.id}" class="mt-2 text-sm"></div>
     `;
     wrapper.appendChild(card);
-    
   });
 }
 
@@ -661,6 +662,7 @@ function judgeCase (id) {
   if (!chosen) { alert('Select an answer first!'); return; }
 
   const box = document.getElementById(`pcbu-feedback-${id}`);
+  if (!box) return;
 
   if (chosen.value === cs.correct) {
     box.textContent = cs.feedbackRight;
@@ -676,11 +678,11 @@ function judgeCase (id) {
   updatePCBUHUD();
 
   if (pcbuXP === pcbuCases.length * 100) {
-    document.getElementById('task5-finish').classList.remove('hidden');
+    const fin = document.getElementById('task5-finish');
+    if (fin) fin.classList.remove('hidden');
   }
   if (pcbuLives === 0) {
-    alert('Out of lives! Restart Task 5 to try again.');
-    showTask(5);
+    alert('Out of lives! Restart Task 5 to try again.');
   }
 }
 
@@ -690,8 +692,10 @@ function lockCase (id) {
 }
 
 function updatePCBUHUD () {
-  document.getElementById('pcbu-xp').textContent    = pcbuXP;
-  document.getElementById('pcbu-lives').textContent = pcbuLives;
+  const xpEl = document.getElementById('pcbu-xp');
+  const livesEl = document.getElementById('pcbu-lives');
+  if (xpEl)   xpEl.textContent    = pcbuXP;
+  if (livesEl) livesEl.textContent = pcbuLives;
 }
 
 let gameState = {
@@ -737,19 +741,24 @@ function showTask(taskNumber) {
     const el = document.getElementById(`task${i}`);
     if (el) el.classList.add('hidden');
   }
-  // Only reveal Task 2 after image is chosen
-  if (taskNumber !== 2) {
-    document.getElementById(`task${taskNumber}`).classList.remove('hidden');
-  }
+
+  const target = document.getElementById(`task${taskNumber}`);
+  if (target) target.classList.remove('hidden');
+
   gameState.currentTask = taskNumber;
 
-  if (taskNumber === 1) initializeTask1();
-  if (taskNumber === 2) openT2Picker();           // ← changed
-  if (taskNumber === 4) initializeTask4();
-  if (taskNumber === 5) initializeTask5();
+  if (taskNumber === 1) initializeTask1?.();
+  if (taskNumber === 2) initializeTask2?.();
+  if (taskNumber === 4) initializeTask4?.();
+  if (taskNumber === 5) initializeTask5?.();
 }
 
-
+// helper used by Task 4 completion button (keeps flow consistent)
+function completeTask4(){
+  if (!gameState.completedTasks.includes(4)) gameState.completedTasks.push(4);
+  updateProgress?.();
+  showTask(5);
+}
 /* --------------  TASK 1 (Hazard Apples)  -------------- */
 function initializeTask1() {
   document.querySelectorAll('.hazard-apple').forEach(apple => {
@@ -787,8 +796,8 @@ function closeHazardModal() {
 }
 function submitHazardDescription() {
   const description = document.getElementById('hazard-description-input').value.trim();
-  if (description.length < 10) {
-    alert('Please provide a more detailed description (at least 10 characters).');
+  if (description.length < 1) {
+    alert('Please provide a more detailed description.');
     return;
   }
   const hazardId = gameState.currentHazardId;
@@ -827,308 +836,196 @@ function completeTask1() {
   showTask(2);
 }
 
-/* --------------  TASK 2 (Eliminate vs Minimise, with Image Picker)  -------------- */
+// Small helpers used by Task 2
+const qs  = sel => document.querySelector(sel);
+const qsa = sel => Array.from(document.querySelectorAll(sel));
+const shuffle = (arr) => { const a = arr.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const escapeHtml = (s) => { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; };
 
-// ---------- Task 2: Image selection ----------
-const t2Images = [
-  { id: 'img_packhouse', name: 'Packhouse Floor', src: 'images/t2_packhouse.png', diff: 2 },
-  { id: 'img_row',      name: 'Orchard Row',     src: 'images/t2_row.png',       diff: 1 },
-  { id: 'img_workshop', name: 'Workshop',        src: 'images/t2_workshop.png',  diff: 3 },
-];
+// === Task 2 config: exactly 3 random unique hazards from 8 PER RUN
+const t2Config = { maxClicks: 3 };
 
-let t2ChosenImage = null;
-
-function openT2Picker() {
-  const grid = document.getElementById('t2-grid');
-  grid.innerHTML = '';
-  t2ChosenImage = null;
-
-  t2Images.forEach(img => {
-    const card = document.createElement('button');
-    card.type = 'button';
-    card.className = 'text-left p-2 border rounded-lg hover:shadow focus:ring outline-none';
-    card.setAttribute('aria-label', `Select image: ${img.name}`);
-    card.innerHTML = `
-      <img src="${img.src}" alt="${img.name}" class="square-thumb mb-2">
-      <div class="text-sm font-medium">${img.name}</div>
-      <div class="text-xs text-gray-500">${'⭐'.repeat(img.diff)}</div>
-    `;
-    card.addEventListener('click', () => pickT2(img));
-    grid.appendChild(card);
-  });
-
-  // Reset picker footer
-  document.getElementById('t2-picked-thumb').classList.add('hidden');
-  document.getElementById('t2-picked-name').textContent = '';
-  document.getElementById('t2-continue').disabled = true;
-
-  // Wire picker buttons
-  document.getElementById('t2-random').onclick = () => {
-    const img = t2Images[Math.floor(Math.random() * t2Images.length)];
-    pickT2(img);
-  };
-  document.getElementById('t2-help').onclick = () => alert(
-    'Choose one image (or Random Draw). Then complete 3 control cards: pick Eliminate or Minimise and write a 1–2 sentence control for each hazard.'
-  );
-  document.getElementById('t2-continue').onclick = () => {
-    closeT2Picker();
-    document.getElementById('task2').classList.remove('hidden');
-    initializeTask2(t2ChosenImage);
-  };
-
-  // Show the modal
-  document.getElementById('t2-image-picker').classList.remove('hidden');
+// Ensure Task 2 state exists (and has a 3-item pre-picked set)
+function ensureT2State(){
+  if (!gameState.task2){
+    gameState.task2 = {
+      usedFruitIndexes: new Set(),
+      responses: [],
+      chosenHazards: [],
+      roundHazards: shuffle([1,2,3,4,5,6,7,8]).slice(0,3), // <- the only 3 we will use
+      pendingFruitIndex: null,
+      pendingFruitBtn: null
+    };
+  }
+  if (!gameState.task2.roundHazards || gameState.task2.roundHazards.length !== 3){
+    gameState.task2.roundHazards = shuffle([1,2,3,4,5,6,7,8]).slice(0,3);
+  }
 }
 
-function closeT2Picker() {
-  document.getElementById('t2-image-picker').classList.add('hidden');
+function initializeTask2(){
+  ensureT2State();
+  placeFruitHotspots();
+  updateT2Count();
 }
 
-function pickT2(img) {
-  t2ChosenImage = img;
-  const pThumb = document.getElementById('t2-picked-thumb');
-  pThumb.src = img.src;
-  pThumb.alt = img.name;
-  pThumb.classList.remove('hidden');
-  document.getElementById('t2-picked-name').textContent = img.name;
-  document.getElementById('t2-continue').disabled = false;
-}
+function placeFruitHotspots(){
+  const host = qs('#crate-hotspot'); if(!host) return;
+  host.innerHTML = '';
 
-// ---------- Task 2 main ----------
-function initializeTask2(chosenImage) {
-  // Build 3 empty response slots
-  gameState.task2Responses = [
-    { hazardId: '', choice: '', description: '' },
-    { hazardId: '', choice: '', description: '' },
-    { hazardId: '', choice: '', description: '' }
+  // positions are now % inside the crate opening
+  const spots = [
+    [18,18],[40,16],[70,20],
+    [26,46],[53,50],[78,44],
+    [22,72],[50,68],[75,70]
   ];
 
-  const container = document.getElementById('t2-cards');
-  container.innerHTML = '';
+  const pickedSpots = shuffle(spots).slice(0,3);
 
-  // Show the chosen image banner above the cards
-  if (chosenImage) {
-    // Remove an existing banner if present (avoid duplicates on re-init)
-    const oldBanner = document.getElementById('t2-banner');
-    if (oldBanner) oldBanner.remove();
+  pickedSpots.forEach((p, idx) => {
+    const [x, y] = p; // 0–100 within the hotspot box
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'fruit';
+    b.style.left = x + '%';
+    b.style.top  = y + '%';
 
-    const banner = document.createElement('div');
-    banner.id = 't2-banner';
-    banner.className = 'mb-3 flex items-center gap-3';
-    banner.innerHTML = `
-      <img src="${chosenImage.src}" alt="${chosenImage.name}" class="square-thumb">
-      <div>
-        <div class="text-sm font-semibold">${chosenImage.name}</div>
-        <div class="text-xs text-gray-500">Work with this image for your 3 controls.</div>
-      </div>`;
-    // Insert before the cards wrapper
-    const t2CardsWrapper = document.getElementById('t2-cards');
-    t2CardsWrapper.parentElement.insertBefore(banner, t2CardsWrapper);
+    // fake depth: smaller at the back (y≈0), larger near the front (y≈100)
+    const depth = 0.85 + (y/100)*0.35; // 0.85 → 1.20
+    b.style.setProperty('--depth', depth);
+
+    b.setAttribute('aria-label','Pick kiwifruit');
+    b.textContent = '🥝';
+    b.onclick = () => handleFruitClick(b, idx);
+
+    if (gameState.task2.usedFruitIndexes.has(idx)) b.classList.add('used');
+
+    host.appendChild(b);
+  });
+}
+
+function handleFruitClick(btn, index){
+  ensureT2State();
+  if (gameState.task2.responses.length >= t2Config.maxClicks) return;
+  if (gameState.task2.usedFruitIndexes.has(index)) return;
+
+  // Show the next pre-picked hazard (0,1,2). We do NOT mutate the pool here.
+  const nextIdx  = gameState.task2.responses.length; // 0..2
+  const hazardId = gameState.task2.roundHazards[nextIdx];
+
+  // Remember which fruit this attempt belongs to (mark used only on SAVE)
+  gameState.task2.pendingFruitIndex = index;
+  gameState.task2.pendingFruitBtn   = btn;
+
+  openT2Modal(hazardId);
+}
+
+let currentHazardId = null;
+function openT2Modal(hazardId){
+  currentHazardId = hazardId;
+  const h = hazards[hazardId];
+  qs('#t2-modal-title').textContent = `Hazard: ${h.name}`;
+  const img = qs('#t2-modal-img'); img.src = h.img; img.alt = h.alt || h.name;
+  qs('#t2-minimise').value = '';
+  qs('#t2-eliminate').value = '';
+  qs('#t2-modal').classList.remove('hidden');
+}
+
+function closeT2Modal(){
+  qs('#t2-modal').classList.add('hidden');
+  currentHazardId = null;
+}
+
+// Wire modal buttons (replace existing listeners)
+qs('#t2-close').addEventListener('click', ()=>{
+  gameState.task2.pendingFruitIndex = null;
+  gameState.task2.pendingFruitBtn   = null;
+  closeT2Modal();
+});
+
+qs('#t2-cancel').addEventListener('click', ()=>{
+  gameState.task2.pendingFruitIndex = null;
+  gameState.task2.pendingFruitBtn   = null;
+  closeT2Modal();
+});
+
+qs('#t2-save').addEventListener('click', ()=>{
+  const minTxt = qs('#t2-minimise').value.trim();
+  const eliTxt = qs('#t2-eliminate').value.trim();
+  if (minTxt.length < 1 || eliTxt.length < 1){
+    alert('Please provide detailed responses.');
+    return;
   }
 
-  // Options come from hazards found in Task 1; if empty, fall back to all hazards
-  const availableIds = gameState.hazardsFound.length
-    ? gameState.hazardsFound
-    : Object.keys(hazards);
+  const hazardId = currentHazardId;
+  // Commit this response
+  gameState.task2.responses.push({ hazardId, minimise: minTxt, eliminate: eliTxt });
+  gameState.task2.chosenHazards.push(hazardId);
 
-  const hazardOptionsHTML = availableIds.map(id =>
-    `<option value="${id}">🍎 ${hazards[id].name}</option>`
-  ).join('');
+  // Now mark just this fruit as used
+  const idx = gameState.task2.pendingFruitIndex;
+  const btn = gameState.task2.pendingFruitBtn;
+  if (btn) btn.classList.add('used');
+  if (Number.isInteger(idx)) gameState.task2.usedFruitIndexes.add(idx);
 
-  // Create three cards
-  for (let i = 0; i < 3; i++) {
+  // Clear pending
+  gameState.task2.pendingFruitIndex = null;
+  gameState.task2.pendingFruitBtn   = null;
+
+  renderT2Responses();
+  updateT2Count();
+  closeT2Modal();
+});
+
+function renderT2Responses(){
+  const wrap = qs('#t2-responses');
+  wrap.innerHTML = '';
+  gameState.task2.responses.forEach((r)=>{
+    const h = hazards[r.hazardId];
     const card = document.createElement('div');
     card.className = 'rounded-xl border border-gray-200 p-4 bg-gray-50';
     card.innerHTML = `
-      <div class="flex items-center justify-between">
-        <h3 class="font-semibold text-gray-800">Card ${i + 1}</h3>
-        <span id="t2-ok-${i}" class="hidden badge inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-700">Ready</span>
-      </div>
-
-      <label class="block text-sm font-medium text-gray-700 mt-3 mb-1">Select a hazard</label>
-      <select id="t2-h-${i}" class="w-full border border-gray-300 rounded-lg p-2 bg-white">
-        <option value="">— choose —</option>
-        ${hazardOptionsHTML}
-      </select>
-
-      <label class="block text-sm font-medium text-gray-700 mt-3 mb-1">Choose control type</label>
-      <div class="grid grid-cols-2 gap-2">
-        <button type="button" class="t2-choice btn-choice" data-slot="${i}" data-value="eliminate">🗑️ Eliminate</button>
-        <button type="button" class="t2-choice btn-choice" data-slot="${i}" data-value="minimise">🛡️ Minimise</button>
-      </div>
-
-      <label class="block text-sm font-medium text-gray-700 mt-3 mb-1">Describe the control (one or two sentences)</label>
-      <textarea id="t2-d-${i}" rows="3" class="w-full border border-gray-300 rounded-lg p-2" placeholder="e.g., Remove the broken ladder from service and use a cherry picker."></textarea>
-      <p class="text-xs text-gray-500 mt-1">Minimum 12 characters.</p>
-    `;
-    container.appendChild(card);
-  }
-
-  // Style for choice buttons (mobile friendly)
-  injectT2ChoiceStyles();
-
-  // Wire up handlers for this run
-  document.querySelectorAll('.t2-choice').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const slot = parseInt(btn.dataset.slot, 10);
-      const val  = btn.dataset.value;
-      setT2Choice(slot, val);
-      validateT2();
-    });
+      <div class="flex items-start gap-3">
+        <img src="${h.img}" alt="${h.alt||h.name}" class="square-thumb"/>
+        <div class="flex-1">
+          <h4 class="font-semibold text-gray-800">Hazard ${r.hazardId}: ${h.name}</h4>
+          <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="bg-white border border-green-200 rounded p-3">
+              <div class="text-xs font-semibold text-green-700 mb-1">Minimise</div>
+              <p class="text-sm text-gray-700">${escapeHtml(r.minimise)}</p>
+            </div>
+            <div class="bg-white border border-blue-200 rounded p-3">
+              <div class="text-xs font-semibold text-blue-700 mb-1">Eliminate</div>
+              <p class="text-sm text-gray-700">${escapeHtml(r.eliminate)}</p>
+            </div>
+          </div>
+          <p class="mt-2 text-xs text-gray-500">Submitted for teacher review</p>
+        </div>
+      </div>`;
+    wrap.appendChild(card);
   });
+}
 
-  for (let i = 0; i < 3; i++) {
-    document.getElementById(`t2-h-${i}`).addEventListener('change', validateT2);
-    document.getElementById(`t2-d-${i}`).addEventListener('input', validateT2);
+function updateT2Count(){
+  const done = (gameState.task2?.responses.length) || 0;
+  const el = qs('#t2-count');
+  if (el) el.textContent = done;
+  if (done >= 3){
+    qsa('#t2-bin .fruit').forEach(f => f.classList.add('used'));
+    const btn = qs('#task2-complete');
+    btn.classList.remove('hidden');
+    btn.onclick = completeTask2;
   }
-
-  validateT2();
 }
 
-function setT2Choice(slot, value) {
-  gameState.task2Responses[slot].choice = value;
-
-  // Toggle visual active state
-  const group = document.querySelectorAll(`.t2-choice[data-slot="${slot}"]`);
-  group.forEach(b => b.classList.remove('active'));
-  const picked = document.querySelector(`.t2-choice[data-slot="${slot}"][data-value="${value}"]`);
-  if (picked) picked.classList.add('active');
-}
-
-function validateT2() {
-  let complete = 0;
-
-  for (let i = 0; i < 3; i++) {
-    const hSel = document.getElementById(`t2-h-${i}`);
-    const txt  = document.getElementById(`t2-d-${i}`);
-    const ok   = document.getElementById(`t2-ok-${i}`);
-
-    gameState.task2Responses[i].hazardId    = hSel.value;
-    gameState.task2Responses[i].description = txt.value.trim();
-
-    const good = hSel.value && gameState.task2Responses[i].choice &&
-                 gameState.task2Responses[i].description.length >= 12;
-
-    ok.classList.toggle('hidden', !good);
-    if (good) complete++;
-  }
-
-  // Progress UI
-  const pct = (complete / 3) * 100;
-  document.getElementById('t2-progress').textContent = `${complete}/3`;
-  document.getElementById('t2-bar').style.width = `${pct}%`;
-
-  // Only show submit when all 3 are complete (exactly three; no extras exist)
-  document.getElementById('task2-complete').classList.toggle('hidden', complete !== 3);
-}
-
-function completeTask2() {
-  // Freeze inputs (summative)
-  document.querySelectorAll('#t2-cards select, #t2-cards textarea, #t2-cards .t2-choice')
-          .forEach(el => el.disabled = true);
-
-  // Confirmation panel
+function completeTask2(){
+  qsa('#t2-bin .fruit').forEach(f => f.disabled = true);
   const conf = document.createElement('div');
-  conf.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4 text-sm text-blue-700';
-  conf.innerHTML = `✅ Your three Eliminate/Minimise decisions & descriptions have been recorded for teacher review.`;
-  document.querySelector('#task2').appendChild(conf);
-
-  if (!gameState.completedTasks.includes(2)) {
-    gameState.completedTasks.push(2);
-    updateProgress();
-  }
+  conf.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-700 mt-4';
+  conf.textContent = '✅ Your three hazard controls (both minimise & eliminate) have been recorded for assessor review.';
+  qs('#task2').appendChild(conf);
+  if (!gameState.completedTasks.includes(2)) gameState.completedTasks.push(2);
+  updateProgress();
   showTask(3);
-}
-
-function injectT2ChoiceStyles() {
-  if (document.getElementById('t2-choice-style')) return;
-  const s = document.createElement('style');
-  s.id = 't2-choice-style';
-  s.textContent = `
-    .btn-choice {
-      display:inline-flex;align-items:center;justify-content:center;
-      border:2px solid #d1d5db;border-radius:.75rem;padding:.6rem .8rem;
-      background:#fff;color:#1f2937;font-weight:600
-    }
-    .btn-choice.active { border-color:#16a34a;background:#dcfce7;color:#166534 }
-    @media (max-width:640px){
-      .btn-choice{ padding: .75rem .9rem; }
-    }
-  `;
-  document.head.appendChild(s);
-}
-
-function setT2Choice(slot, value) {
-  gameState.task2Responses[slot].choice = value;
-
-  // Toggle visual active state
-  const group = document.querySelectorAll(`.t2-choice[data-slot="${slot}"]`);
-  group.forEach(b => b.classList.remove('active'));
-  const picked = document.querySelector(`.t2-choice[data-slot="${slot}"][data-value="${value}"]`);
-  if (picked) picked.classList.add('active');
-}
-
-function validateT2() {
-  let complete = 0;
-
-  for (let i = 0; i < 3; i++) {
-    const hSel = document.getElementById(`t2-h-${i}`);
-    const txt  = document.getElementById(`t2-d-${i}`);
-    const ok   = document.getElementById(`t2-ok-${i}`);
-
-    gameState.task2Responses[i].hazardId    = hSel.value;
-    gameState.task2Responses[i].description = txt.value.trim();
-
-    const good = hSel.value && gameState.task2Responses[i].choice &&
-                 gameState.task2Responses[i].description.length >= 12;
-
-    ok.classList.toggle('hidden', !good);
-    if (good) complete++;
-  }
-
-  // Progress UI
-  const pct = (complete / 3) * 100;
-  document.getElementById('t2-progress').textContent = `${complete}/3`;
-  document.getElementById('t2-bar').style.width = `${pct}%`;
-
-  // Only show submit when all 3 are complete (exactly three; no extras exist)
-  document.getElementById('task2-complete').classList.toggle('hidden', complete !== 3);
-}
-
-function completeTask2() {
-  // Freeze inputs (summative)
-  document.querySelectorAll('#t2-cards select, #t2-cards textarea, #t2-cards .t2-choice')
-          .forEach(el => el.disabled = true);
-
-  // Confirmation panel
-  const conf = document.createElement('div');
-  conf.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4 text-sm text-blue-700';
-  conf.innerHTML = `✅ Your three Eliminate/Minimise decisions & descriptions have been recorded for teacher review.`;
-  document.querySelector('#task2').appendChild(conf);
-
-  if (!gameState.completedTasks.includes(2)) {
-    gameState.completedTasks.push(2);
-    updateProgress();
-  }
-  showTask(3);
-}
-
-function injectT2ChoiceStyles() {
-  if (document.getElementById('t2-choice-style')) return;
-  const s = document.createElement('style');
-  s.id = 't2-choice-style';
-  s.textContent = `
-    .btn-choice {
-      display:inline-flex;align-items:center;justify-content:center;
-      border:2px solid #d1d5db;border-radius:.75rem;padding:.6rem .8rem;
-      background:#fff;color:#1f2937;font-weight:600
-    }
-    .btn-choice.active { border-color:#16a34a;background:#dcfce7;color:#166534 }
-    @media (max-width:640px){
-      .btn-choice{ padding: .75rem .9rem; }
-    }
-  `;
-  document.head.appendChild(s);
 }
 
 /* --------------  TASK 3 (Incident Form)  -------------- */
@@ -1161,108 +1058,140 @@ function completeTask3() {
   updateProgress();
   showTask(4);
 }
+/* ===== Task 4: Tap-to-order (summative, no instant feedback) ===== */
+const T4_STEPS = [
+  { key:'isolate',  text:'🚧 Isolate the area and ensure scene safety' },
+  { key:'assess',   text:'🩺 Check for responsiveness and breathing' },
+  { key:'call111',  text:'📞 Call 111 for emergency services' },
+  { key:'firstaid', text:'🏥 Provide first aid as trained' },
+  { key:'notify',   text:'📋 Notify supervisor and WorkSafe NZ' },
+  { key:'preserve', text:'🔍 Preserve scene for investigation' },
+];
 
-/* --------------  TASK 4 (Emergency Sequence – mobile tap fallback)  -------------- */
-function isSmallScreen(){ return window.matchMedia('(max-width: 640px)').matches; }
+let t4State = null;
 
-function initializeTask4() {
-  // Enable drag on larger screens
-  document.querySelectorAll('.emergency-step').forEach(step => {
-    step.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', JSON.stringify({
-        step: step.dataset.step, text: step.textContent.trim()
-      }));
-    });
+function initializeTask4(){
+  // fresh run each time Task 4 is shown
+  t4State = {
+    available: shuffle(T4_STEPS),      // uses your existing shuffle()
+    slots: new Array(6).fill(null),    // {key,text} or null
+    history: []                        // stack of {from:'pool'|'slot', index, item}
+  };
+  t4Render();
+}
 
-    // Mobile: tap to place
-    if (isSmallScreen()) {
-      step.addEventListener('click', () => placeStepByTap(step));
-      step.classList.add('ring-1','ring-blue-200','rounded-lg'); // larger tap target
+function t4Render(){
+  // pool
+  const pool = qs('#t4-pool'); 
+  if (!pool) return;
+  pool.innerHTML = '';
+  t4State.available.forEach((item, i)=>{
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 't4-card';
+    b.textContent = item.text;
+    b.onclick = ()=> t4PlaceFromPool(i);
+    pool.appendChild(b);
+  });
+
+  // slots: create once
+  const slots = qs('#t4-slots');
+  if (!slots) return;
+  if (!slots.children.length){
+    for (let i=0;i<6;i++){
+      const s = document.createElement('button');
+      s.type='button';
+      s.className='t4-slot';
+      s.dataset.index=i;
+      s.textContent = `Step ${i+1}: Tap to place`;
+      s.onclick = ()=> t4RemoveFromSlot(i);
+      slots.appendChild(s);
+    }
+  }
+  // fill visuals
+  Array.from(slots.children).forEach((node,i)=>{
+    const item = t4State.slots[i];
+    if (item){
+      node.classList.add('filled');
+      node.textContent = item.text;
+    }else{
+      node.classList.remove('filled');
+      node.textContent = `Step ${i+1}: Tap to place`;
     }
   });
-
-  document.querySelectorAll('#emergency-sequence .drop-zone').forEach(zone => {
-    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
-    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
-    zone.addEventListener('drop', function(e) {
-      e.preventDefault(); this.classList.remove('drag-over');
-      const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-      this.innerHTML = `<div class="bg-blue-100 border border-blue-300 rounded p-2 text-sm">${data.text}</div>`;
-      this.dataset.step = data.step;
-
-      const original = document.querySelector(`#emergency-steps [data-step="${data.step}"]`);
-      if (original && original.parentElement.id === 'emergency-steps') original.remove();
-    });
-  });
 }
 
-function nextEmptyDropZone(){
-  return Array.from(document.querySelectorAll('#emergency-sequence .drop-zone'))
-              .find(z => !z.dataset.step);
+function nextEmptySlot(){
+  const idx = t4State.slots.findIndex(s => !s);
+  return idx === -1 ? null : idx;
 }
 
-function placeStepByTap(stepEl) {
-  const zone = nextEmptyDropZone();
-  if (!zone) return; // all filled
-  const text = stepEl.textContent.trim();
-  const key  = stepEl.dataset.step;
-  zone.innerHTML = `<div class="bg-blue-100 border border-blue-300 rounded p-2 text-sm">${text}</div>`;
-  zone.dataset.step = key;
-  // remove from source
-  if (stepEl.parentElement?.id === 'emergency-steps') stepEl.remove();
-}
+function t4PlaceFromPool(poolIndex){
+  const slotIndex = nextEmptySlot();
+  if (slotIndex === null) return; // already full
+  const item = t4State.available.splice(poolIndex,1)[0];
+  t4State.slots[slotIndex] = item;
+  t4State.history.push({from:'pool', index:poolIndex, slot:slotIndex, item});
+  t4Render();
 
-function clearEmergencySequence() {
-  // move placed items back to the source list
-  const source = document.getElementById('emergency-steps');
-  document.querySelectorAll('#emergency-sequence .drop-zone').forEach(zone => {
-    if (zone.dataset.step) {
-      const txt = zone.textContent.trim();
-      const key = zone.dataset.step;
-      const div = document.createElement('div');
-      div.className = 'emergency-step bg-blue-100 border border-blue-300 rounded-lg p-3 cursor-move';
-      div.setAttribute('draggable', 'true');
-      div.dataset.step = key;
-      div.textContent = txt;
-      // reattach handlers
-      div.addEventListener('dragstart', e => {
-        e.dataTransfer.setData('text/plain', JSON.stringify({ step: key, text: txt }));
-      });
-      if (isSmallScreen()) div.addEventListener('click', () => placeStepByTap(div));
-      source.appendChild(div);
-    }
-    zone.textContent = `Step ${zone.getAttribute('data-position')}: Drop here`;
-    delete zone.dataset.step;
-  });
-}
-function checkTask4() {
-  const order = [];
-  document.querySelectorAll('#emergency-sequence .drop-zone').forEach(zone => {
-    if (zone.dataset.step) order.push(zone.dataset.step);
-  });
-  if (order.length < 6) {
-    alert('Please place all 6 emergency steps in order before submitting.');
-    return;
+  // When all 6 slots are filled, silently record and reveal "Complete" button
+  if (nextEmptySlot() === null){
+    const orderKeys  = t4State.slots.map(s=>s.key);
+    const orderTexts = t4State.slots.map(s=>s.text);
+    gameState.task4Sequence      = orderKeys;   // used in downloadSummary()
+    gameState.task4SequenceTexts = orderTexts;  // human-readable backup
+
+    // neutral confirmation (no correctness feedback)
+    const conf = document.createElement('div');
+    conf.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4';
+    conf.innerHTML = `<h4 class="font-semibold text-blue-800">🚨 Emergency Sequence Recorded</h4>
+      <p class="text-sm text-blue-600">Your chosen order has been saved for assessor review.</p>`;
+    qs('#task4').appendChild(conf);
+
+    const doneBtn = qs('#task4-complete');
+    if (doneBtn) doneBtn.classList.remove('hidden');
   }
-  // record for summary
-  gameState.task4Sequence = order;
-
-  // show complete button & confirmation
-  document.getElementById('task4-complete').classList.remove('hidden');
-  const conf = document.createElement('div');
-  conf.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4';
-  conf.innerHTML = `
-    <h4 class="font-semibold text-blue-800">🚨 Emergency Sequence Submitted</h4>
-    <p class="text-sm text-blue-600">Your emergency procedure sequence has been recorded for teacher review.</p>`;
-  document.querySelector('#task4').appendChild(conf);
 }
 
-function completeTask4() {
-  if (!gameState.completedTasks.includes(4)) {
-    gameState.completedTasks.push(4);
-    updateProgress();
+function t4RemoveFromSlot(slotIndex){
+  const item = t4State.slots[slotIndex];
+  if (!item) return;
+  t4State.slots[slotIndex] = null;
+  t4State.available.push(item);
+  t4State.history.push({from:'slot', index:slotIndex, item});
+  t4Render();
+
+  // hide the completion button if they edit after filling
+  const doneBtn = qs('#task4-complete');
+  if (doneBtn) doneBtn.classList.add('hidden');
+}
+
+function t4Undo(){
+  const h = t4State.history.pop(); 
+  if (!h) return;
+  if (h.from === 'pool'){
+    // we placed from pool -> undo means remove from slot and return to pool
+    t4State.slots[h.slot] = null;
+    t4State.available.push(h.item);
+  }else{
+    // we removed from slot -> undo means put back in slot and remove last pool item
+    const lastPoolIdx = t4State.available.length - 1;
+    t4State.available.splice(lastPoolIdx,1);
+    t4State.slots[h.index] = h.item;
   }
-  showTask(5);
+  t4Render();
+}
+
+function t4Clear(){
+  t4State.available = [...t4State.available, ...t4State.slots.filter(Boolean)];
+  t4State.slots = new Array(6).fill(null);
+  t4State.history = [];
+  t4Render();
+}
+
+function t4Shuffle(){
+  t4State.available = shuffle(t4State.available);
+  t4Render();
 }
 // Court verdict system
 const TOTAL_REQUIRED = 2;   // ← only change needed if you add/remove cases later
@@ -1411,26 +1340,27 @@ Time: ${new Date().toLocaleTimeString()}
 
 STUDENT RESPONSES FOR TEACHER REVIEW:\n\n`;
 
-  // ── Task 1
+  // Task 1
   txt += 'TASK 1: HAZARD IDENTIFICATION\n';
-  Object.keys(gameState.hazardDescriptions).forEach(id => {
+  Object.keys(gameState.hazardDescriptions || {}).forEach(id => {
     txt += `Hazard ${id}: ${hazards[id].name}
 Student Description: ${gameState.hazardDescriptions[id]}\n`;
   });
 
-  // ── Task 2 (Eliminate vs Minimise)
+  // Task 2 (new structure)
   txt += '\nTASK 2: ELIMINATE vs MINIMISE (3 required)\n';
-  if (gameState.task2Responses) {
-    gameState.task2Responses.forEach((r, idx) => {
-      if (r.hazardId) {
-        txt += `Card ${idx + 1}: Hazard ${r.hazardId} - ${hazards[r.hazardId].name}
-Type: ${r.choice.toUpperCase()}
-Description: ${r.description}\n`;
-      }
+  if (gameState.task2 && gameState.task2.responses.length){
+    gameState.task2.responses.forEach((r, idx) => {
+      const h = hazards[r.hazardId];
+      txt += `Item ${idx + 1}: Hazard ${r.hazardId} - ${h.name}
+Minimise: ${r.minimise}
+Eliminate: ${r.eliminate}\n`;
     });
+  } else {
+    txt += 'No Task 2 responses recorded.\n';
   }
 
-  // ── Task 3
+  // Task 3
   txt += '\nTASK 3: INCIDENT REPORTING\n';
   if (gameState.task3Responses) {
     const r = gameState.task3Responses;
@@ -1440,15 +1370,32 @@ Notify: ${r.notify}
 WorkSafe Timing: ${r.worksafeTiming}\n`;
   }
 
-  // ── Task 4
-  txt += '\nTASK 4: EMERGENCY PROCEDURES\n';
-  if (gameState.task4Sequence) {
-    txt += gameState.task4Sequence.map((s, i) => `${i + 1}. ${s}`).join('\n') + '\n';
-  }
+// Task 4
+txt += '\nTASK 4: EMERGENCY PROCEDURES\n';
+if (gameState.task4Sequence && gameState.task4Sequence.length){
+  // map keys -> readable text for the export
+  const T4_LABELS = {
+    isolate:'Isolate the area and ensure scene safety',
+    assess:'Check for responsiveness and breathing',
+    call111:'Call 111 for emergency services',
+    firstaid:'Provide first aid as trained',
+    notify:'Notify supervisor and WorkSafe NZ',
+    preserve:'Preserve scene for investigation'
+  };
+  txt += gameState.task4Sequence
+    .map((k,i)=> `${i+1}. ${T4_LABELS[k] || k}`)
+    .join('\n') + '\n';
+} else if (gameState.task4SequenceTexts && gameState.task4SequenceTexts.length){
+  txt += gameState.task4SequenceTexts
+    .map((t,i)=> `${i+1}. ${t.replace(/^..\s/,'')}`) // strip emojis if desired
+    .join('\n') + '\n';
+} else {
+  txt += 'No Task 4 sequence recorded.\n';
+}
 
-  // ── Task 5
+  // Task 5
   txt += '\nTASK 5: COURT VERDICTS\n';
-  Object.keys(courtVerdicts).forEach(num => {
+  Object.keys(courtVerdicts || {}).forEach(num => {
     const v = courtVerdicts[num];
     txt += `Case ${num}: ${v.verdict.toUpperCase()}
 Reasoning: ${v.reasoning}\n`;
@@ -1464,6 +1411,7 @@ Reasoning: ${v.reasoning}\n`;
   a.click();
   URL.revokeObjectURL(url);
 }
+
 </script>
 
 <!-- Accessibility: TTS + STT helpers (kept, moved before </body>) -->
